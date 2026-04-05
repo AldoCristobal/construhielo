@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Design tokens ──────────────────────────────── */
+:root {
+  --bg:       #f8fbfd;
+  --surface:  #ffffff;
+  --surface2: #eef5f9;
+  --border:   rgba(35, 90, 140, 0.12);
+  --border2:  rgba(35, 90, 140, 0.25);
+  --accent:   #235a8c;
+  --accent2:  #2e74b0;
+  --accentC:  #22bbd4;
+  --text:     #1c3348;
+  --muted:    #5a7a90;
+  --ease:     cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Base ───────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
+::selection { background: rgba(34, 187, 212, 0.2); }
+
+/* ── Scroll reveal ──────────────────────────────── */
+@keyframes rv-up    { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:none; } }
+@keyframes rv-left  { from { opacity:0; transform:translateX(-30px); } to { opacity:1; transform:none; } }
+@keyframes rv-right { from { opacity:0; transform:translateX(30px); } to { opacity:1; transform:none; } }
+@keyframes rv-scale { from { opacity:0; transform:scale(0.93); } to { opacity:1; transform:none; } }
+
+[data-reveal]         { opacity: 0; }
+[data-reveal="left"]  { transform: translateX(-30px); }
+[data-reveal="right"] { transform: translateX(30px); }
+[data-reveal="scale"] { transform: scale(0.93); }
+
+[data-reveal].visible                          { animation: rv-up    0.72s var(--ease) both; }
+[data-reveal="left"].visible                   { animation: rv-left  0.72s var(--ease) both; }
+[data-reveal="right"].visible                  { animation: rv-right 0.72s var(--ease) both; }
+[data-reveal="scale"].visible                  { animation: rv-scale 0.72s var(--ease) both; }
+
+[data-reveal][data-delay="100"].visible { animation-delay: .10s; }
+[data-reveal][data-delay="200"].visible { animation-delay: .20s; }
+[data-reveal][data-delay="300"].visible { animation-delay: .30s; }
+[data-reveal][data-delay="400"].visible { animation-delay: .40s; }
+[data-reveal][data-delay="500"].visible { animation-delay: .50s; }
+[data-reveal][data-delay="600"].visible { animation-delay: .60s; }
+
+/* ── Typography ─────────────────────────────────── */
+.display  { font-family: 'Bebas Neue', cursive; line-height: 0.92; letter-spacing: 0.02em; }
+.mono-tag { font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; }
+
+/* ── Card ───────────────────────────────────────── */
+.card {
+  border: 1px solid var(--border);
+  transition: border-color 0.28s, box-shadow 0.28s;
+}
+.card:hover {
+  border-color: var(--border2);
+  box-shadow: 0 4px 22px rgba(35, 90, 140, 0.08);
+}
+
+/* ── Buttons ────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; gap: 0.45rem;
+  padding: 0.72rem 1.7rem;
+  font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600;
+  font-size: 0.82rem; letter-spacing: 0.07em; text-transform: uppercase;
+  cursor: pointer; border: none; outline: none;
+  transition: all 0.26s var(--ease);
+  clip-path: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 100%, 0 calc(100% - 9px));
+}
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover {
+  background: var(--accent2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(35, 90, 140, 0.28);
+}
+.btn-outline {
+  background: transparent; color: var(--accent);
+  border: 1.5px solid var(--accent);
+  clip-path: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 100%, 0 calc(100% - 9px));
+}
+.btn-outline:hover {
+  background: var(--accent); color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(35, 90, 140, 0.22);
+}
+
+/* ── Accent bar ─────────────────────────────────── */
+.abar { display: block; width: 34px; height: 2px; background: var(--accentC); }
+
+/* ── Corner marks ───────────────────────────────── */
+.ctl::before, .ctl::after { content:''; position:absolute; background:var(--accentC); }
+.ctl::before { top:0; left:0; width:16px; height:1px; }
+.ctl::after  { top:0; left:0; width:1px;  height:16px; }
+.cbr::before, .cbr::after { content:''; position:absolute; background:var(--accentC); }
+.cbr::before { bottom:0; right:0; width:16px; height:1px; }
+.cbr::after  { bottom:0; right:0; width:1px;  height:16px; }
+
+/* ── HR ─────────────────────────────────────────── */
+.hr { border:none; height:1px; background:linear-gradient(90deg,transparent,var(--border2),transparent); }
+
+/* ── Gradient text ──────────────────────────────── */
+.grad-text {
+  background: linear-gradient(125deg, #235a8c 0%, #2e74b0 40%, #22bbd4 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+/* ── Paper texture ──────────────────────────────── */
+.paper-texture {
+  background-image:
+    linear-gradient(rgba(35,90,140,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(35,90,140,0.04) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+/* ── WhatsApp float ─────────────────────────────── */
+#wa-float {
+  position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 99;
+  width: 50px; height: 50px; border-radius: 50%;
+  background: #25d366;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 16px rgba(37,211,102,0.38);
+  transition: transform .25s, box-shadow .25s;
+}
+#wa-float:hover { transform: scale(1.1); box-shadow: 0 6px 22px rgba(37,211,102,0.5); }
+
+/* ── Nav active underline ───────────────────────── */
+.nav-link { position: relative; }
+.nav-link::after {
+  content: ''; position: absolute; bottom: -3px; left: 0;
+  width: 0; height: 1.5px; background: var(--accentC);
+  transition: width .28s var(--ease);
+}
+.nav-link:hover::after,
+.nav-link.active::after { width: 100%; }

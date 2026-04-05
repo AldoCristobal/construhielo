@@ -1,0 +1,208 @@
+---
+import SectionHeader from '../ui/SectionHeader.astro';
+import StatCounter   from '../ui/StatCounter.astro';
+import {
+  STATS_NOSOTROS,
+  DIFERENCIADORES,
+  MISION_VISION,
+  VALORES,
+} from '../../data/nosotros';
+
+/* Intercalado navy / blanco */
+const cardBg = (i: number) => i % 2 === 0
+  ? 'bg-steel-800 border-steel-700'   /* navy */
+  : 'bg-white';                        /* blanco */
+
+const cardDark = (i: number) => i % 2 === 0;
+---
+
+<section id="nosotros" class="py-28 bg-paper-100 relative overflow-hidden" aria-labelledby="nos-h">
+
+  <div class="absolute inset-x-0 top-0 h-px"
+       style="background:linear-gradient(90deg,transparent,rgba(35,90,140,0.2),transparent);"
+       aria-hidden="true"></div>
+
+  <div class="absolute -right-40 top-0 bottom-0 w-[600px] pointer-events-none"
+       style="background:radial-gradient(ellipse at right center, rgba(34,187,212,0.05) 0%, transparent 65%);"
+       aria-hidden="true"></div>
+
+  <div class="max-w-7xl mx-auto px-5 lg:px-10">
+
+    <!-- ── QUIÉNES SOMOS ── -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24">
+
+      <div data-reveal="left" data-delay="100">
+        <SectionHeader
+          tag="Nosotros"
+          title="TRES DÉCADAS<br/><span class='grad-text'>EN REFRIGERACIÓN</span>"
+          id="nos-h"
+        />
+        <p class="text-[--text] text-lg leading-relaxed mb-5 mt-6">
+          Somos una empresa mexicana fundada en Puebla, con más de
+          <strong class="text-steel-700">30 años de trayectoria</strong> en el diseño,
+          fabricación, distribución e instalación de equipos de refrigeración industrial.
+        </p>
+        <p class="text-[--muted] leading-relaxed mb-10">
+          Fabricamos nuestros propios equipos en taller propio y también distribuimos
+          tecnología de marcas líderes — lo que nos permite ofrecerte la solución correcta
+          para cada proyecto, sin limitarnos a un solo catálogo. Nuestros ingenieros y
+          técnicos acompañan el proceso desde el cálculo inicial hasta la puesta en marcha
+          y el mantenimiento.
+        </p>
+        <div class="grid grid-cols-3 gap-5 border-t border-[--border] pt-7">
+          {STATS_NOSOTROS.map(s => <StatCounter count={s.count} suffix={s.suffix} label={s.label}/>)}
+        </div>
+      </div>
+
+      <div class="flex justify-center" data-reveal="right" data-delay="200">
+        <div class="relative w-80 h-80 flex items-center justify-center">
+          <svg class="absolute inset-0 w-full h-full animate-spin-slow" viewBox="0 0 320 320" fill="none" aria-hidden="true">
+            <circle cx="160" cy="160" r="148" stroke="rgba(35,90,140,0.08)" stroke-width="1" stroke-dasharray="6 5"/>
+            <circle cx="160" cy="160" r="130" stroke="rgba(35,90,140,0.06)" stroke-width="1"/>
+            {Array.from({length:32}).map((_,i) => {
+              const a = (i/32)*Math.PI*2;
+              return (
+                <line
+                  x1={160+Math.cos(a)*143} y1={160+Math.sin(a)*143}
+                  x2={160+Math.cos(a)*150} y2={160+Math.sin(a)*150}
+                  stroke="rgba(35,90,140,0.22)" stroke-width="1.2"
+                />
+              );
+            })}
+          </svg>
+          <svg class="w-52 h-52" viewBox="0 0 200 200" fill="none"
+               style="animation:spinRev 10s linear infinite" aria-hidden="true">
+            {[0,30,60,90,120,150].map(deg => {
+              const r = deg*Math.PI/180;
+              const cos = Math.cos(r), sin = Math.sin(r);
+              return (
+                <g>
+                  <line x1={100+cos*15} y1={100+sin*15} x2={100+cos*82} y2={100+sin*82}
+                        stroke="rgba(35,90,140,0.4)" stroke-width="1.8" stroke-linecap="round"/>
+                  {[62,75].map(d => {
+                    const tx = 100+cos*d, ty = 100+sin*d;
+                    return (
+                      <>
+                        <line x1={tx} y1={ty} x2={tx+Math.cos(r+0.6)*10} y2={ty+Math.sin(r+0.6)*10}
+                              stroke="rgba(34,187,212,0.5)" stroke-width="1.2" stroke-linecap="round"/>
+                        <line x1={tx} y1={ty} x2={tx+Math.cos(r-0.6)*10} y2={ty+Math.sin(r-0.6)*10}
+                              stroke="rgba(34,187,212,0.5)" stroke-width="1.2" stroke-linecap="round"/>
+                      </>
+                    );
+                  })}
+                </g>
+              );
+            })}
+            <circle cx="100" cy="100" r="10" fill="#22bbd4" opacity="0.9"/>
+            <circle cx="100" cy="100" r="16" stroke="rgba(34,187,212,0.3)" stroke-width="1" fill="none"/>
+          </svg>
+          <div class="absolute text-center pointer-events-none">
+            <p class="display text-5xl text-steel-700 leading-none">30+</p>
+            <p class="mono-tag text-[9px] text-[--muted] mt-1">AÑOS</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── LO QUE NOS DISTINGUE ── -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-20">
+      {DIFERENCIADORES.map((item, i) => {
+        const dark = cardDark(i);
+        return (
+          <div class:list={['card p-7 relative', cardBg(i)]}
+               data-reveal data-delay={String((i + 1) * 100)}>
+            <div class="ctl absolute top-3 left-3"></div>
+            <div class="flex items-center gap-3 mb-4">
+              <div class:list={[
+                'w-10 h-10 border flex items-center justify-center',
+                dark ? 'border-steel-600 bg-steel-700' : 'border-steel-200 bg-white',
+              ]}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                     class:list={[dark ? 'text-ice-300' : 'text-ice-500']} aria-hidden="true">
+                  <path d={item.ico} stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <span class:list={['mono-tag text-[10px]', dark ? 'text-ice-300' : 'text-ice-500']}>{item.label}</span>
+            </div>
+            <h3 class:list={['display text-2xl mb-3 leading-snug', dark ? 'text-white' : 'text-steel-900']}>{item.headline}</h3>
+            <p class:list={['text-base leading-relaxed', dark ? 'text-steel-200' : 'text-steel-600']}>{item.text}</p>
+          </div>
+        );
+      })}
+    </div>
+
+    <!-- ── MISIÓN & VISIÓN ── -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-20">
+      {MISION_VISION.map((mv, i) => {
+        /* Misión empieza en blanco, Visión en navy */
+        const dark = !cardDark(i);
+        const bg   = dark ? 'bg-steel-800 border-steel-700' : 'bg-white';
+        return (
+          <div class:list={['card p-7 relative', bg]}
+               data-reveal data-delay={String((i + 1) * 200)}>
+            <div class="ctl absolute top-3 left-3"></div>
+            <div class="flex items-center gap-3 mb-4">
+              <div class:list={[
+                'w-10 h-10 border flex items-center justify-center',
+                dark ? 'border-steel-600 bg-steel-700' : 'border-steel-200 bg-steel-50',
+              ]}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                     class:list={[dark ? 'text-ice-300' : 'text-ice-500']} aria-hidden="true">
+                  <path d={mv.ico} stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <span class:list={['mono-tag text-[10px]', dark ? 'text-ice-300' : 'text-ice-500']}>{mv.label}</span>
+            </div>
+            <h3 class:list={['display text-3xl mb-3', dark ? 'text-white' : 'text-steel-900']}>{mv.headline}</h3>
+            <p class:list={['text-base leading-relaxed', dark ? 'text-steel-200' : 'text-steel-600']}>{mv.text}</p>
+          </div>
+        );
+      })}
+    </div>
+
+    <!-- ── VALORES ── -->
+    <div>
+      <div class="mono-tag text-ice-500 flex items-center gap-3 mb-8" data-reveal>
+        <span class="abar"></span>
+        Nuestros Valores
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+        {VALORES.map((v, i) => {
+          const delays = ['100','200','300','400','500','600'] as const;
+          const dark = cardDark(i);
+          return (
+            <div class:list={[
+                   'card p-5 text-center group cursor-default',
+                   dark ? 'bg-steel-800 border-steel-700' : 'bg-white hover:bg-paper-50',
+                 ]}
+                 data-reveal data-delay={delays[i] ?? '100'}>
+              <div class:list={[
+                     'w-10 h-10 border flex items-center justify-center mx-auto mb-3 transition-all duration-300',
+                     dark
+                       ? 'border-steel-600 bg-steel-700 group-hover:bg-steel-600'
+                       : 'border-[--border] group-hover:border-steel-300 group-hover:bg-steel-50',
+                   ]}>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                     class:list={[
+                       'transition-colors',
+                       dark ? 'text-ice-300' : 'text-steel-300 group-hover:text-ice-500',
+                     ]} aria-hidden="true">
+                  <path d={v.ico} stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <p class:list={[
+                   'mono-tag text-[9px] leading-tight transition-colors',
+                   dark ? 'text-steel-200' : 'text-[--muted] group-hover:text-steel-600',
+                 ]}>{v.v}</p>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  @keyframes spinRev { to { transform: rotate(-360deg); } }
+</style>

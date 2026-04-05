@@ -1,0 +1,76 @@
+---
+import LogoSnowflake from '../ui/LogoSnowflake.astro';
+import { NAV } from '../../data/nav';
+
+const contactItems = [
+  {
+    label: 'Tel. 222 590 1004',
+    href:  'tel:2225901004',
+  },
+  {
+    label: 'WhatsApp 222 849 4578',
+    href:  'https://wa.me/522228494578',
+    dot:   true,
+  },
+  {
+    label: 'construhielo@gmail.com',
+    href:  'mailto:construhielo@gmail.com',
+  },
+];
+---
+
+<footer class="bg-steel-900 text-steel-100">
+  <div class="max-w-7xl mx-auto px-5 lg:px-10 py-14">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
+
+      <!-- Brand -->
+      <div>
+        <div class="mb-4">
+          <LogoSnowflake variant="dark" animate={false} textSize="text-lg" />
+        </div>
+        <p class="text-steel-200 text-base leading-relaxed">
+          Más de 30 años fabricando equipos de refrigeración industrial en Puebla.
+          Calidad, eficiencia y compromiso con cada proyecto.
+        </p>
+      </div>
+
+      <!-- Nav -->
+      <div>
+        <p class="mono-tag text-ice-400 text-[11px] mb-4">Navegación</p>
+        <ul class="space-y-3">
+          {NAV.map(({ href, label }) => (
+            <li>
+              <a href={href} class="text-steel-200 text-base hover:text-ice-300 transition-colors">
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div>
+        <p class="mono-tag text-ice-400 text-[11px] mb-4">Contacto directo</p>
+        <ul class="space-y-3 text-steel-200 text-base">
+          {contactItems.map(({ label, href, dot }) => (
+            <li>
+              <a href={href} target={href.startsWith('http') ? '_blank' : undefined}
+                 rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                 class="hover:text-ice-300 transition-colors flex items-center gap-2">
+                {dot && <span class="w-2 h-2 rounded-full bg-[#25d366] flex-shrink-0"></span>}
+                {label}
+              </a>
+            </li>
+          ))}
+          <li class="text-steel-400 text-xs pt-1">Puebla, México</li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="border-steel-700 mb-5"/>
+    <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
+      <p class="mono-tag text-steel-400 text-[11px]">© 2025 ConstruHielo — Todos los derechos reservados</p>
+      <p class="mono-tag text-steel-400 text-[11px]">Refrigeración Industrial · Puebla, México</p>
+    </div>
+  </div>
+</footer>

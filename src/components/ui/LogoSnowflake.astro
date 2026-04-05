@@ -1,0 +1,29 @@
+---
+interface Props {
+  /** 'light' = sobre fondo claro (navbar) | 'dark' = sobre fondo oscuro (footer) */
+  variant?: 'light' | 'dark';
+  href?: string;
+  height?: number;
+}
+
+const {
+  variant = 'light',
+  href    = '#inicio',
+  height  = 44,
+} = Astro.props;
+
+const src = variant === 'dark'
+  ? '/images/logo/logo-light.png'
+  : '/images/logo/logo-dark.png';
+---
+
+<a href={href} class="flex items-center" aria-label="ConstruHielo inicio">
+  <img
+    src={src}
+    alt="ConstruHielo — Refrigeración Industrial"
+    height={height}
+    style={`height:${height}px;width:auto;`}
+    loading="eager"
+    decoding="async"
+  />
+</a>

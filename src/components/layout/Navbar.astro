@@ -1,0 +1,79 @@
+---
+import LogoSnowflake from '../ui/LogoSnowflake.astro';
+import { NAV } from '../../data/nav';
+---
+
+<header
+  id="nav"
+  class="fixed inset-x-0 top-0 z-50 transition-all duration-300 bg-white/80 backdrop-blur-md border-b border-[--border]"
+>
+  <div class="max-w-7xl mx-auto px-5 lg:px-10 h-16 flex items-center justify-between">
+
+    <LogoSnowflake variant="light" animate={true} textSize="text-xl" />
+
+    <!-- Desktop links -->
+    <nav class="hidden md:flex items-center gap-8" aria-label="Navegación principal">
+      {NAV.map(({ href, label }) => (
+        <a
+          href={href}
+          class="nav-link mono-tag text-[10px] text-[--muted] hover:text-[--accent] transition-colors duration-200"
+        >
+          {label}
+        </a>
+      ))}
+    </nav>
+
+    <!-- CTA -->
+    <a href="#contacto" class="btn btn-primary hidden md:inline-flex text-[11px]">
+      Solicitar Cotización
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+
+    <!-- Hamburger -->
+    <button id="hbtn" class="md:hidden p-2 text-[--muted]" aria-label="Abrir menú" aria-expanded="false" aria-controls="mmenu">
+      <svg id="ico-o" width="22" height="22" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <svg id="ico-c" width="22" height="22" fill="none" viewBox="0 0 24 24" class="hidden" aria-hidden="true">
+        <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mmenu" class="hidden md:hidden bg-white border-t border-[--border]" role="navigation" aria-label="Navegación móvil">
+    <nav class="flex flex-col px-5 py-5 gap-4">
+      {NAV.map(({ href, label }) => (
+        <a href={href} class="mono-tag text-[11px] text-[--muted] hover:text-[--accent] transition-colors mob-link">
+          {label}
+        </a>
+      ))}
+      <a href="#contacto" class="btn btn-primary w-fit text-[11px] mt-1">Cotización</a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const hbtn  = document.getElementById('hbtn');
+  const mmenu = document.getElementById('mmenu');
+  const icoO  = document.getElementById('ico-o');
+  const icoC  = document.getElementById('ico-c');
+
+  hbtn?.addEventListener('click', () => {
+    const open = mmenu?.classList.toggle('hidden') === false;
+    hbtn.setAttribute('aria-expanded', String(open));
+    icoO?.classList.toggle('hidden', open);
+    icoC?.classList.toggle('hidden', !open);
+  });
+
+  document.querySelectorAll('.mob-link').forEach(l =>
+    l.addEventListener('click', () => {
+      mmenu?.classList.add('hidden');
+      hbtn?.setAttribute('aria-expanded', 'false');
+      icoO?.classList.remove('hidden');
+      icoC?.classList.add('hidden');
+    })
+  );
+</script>

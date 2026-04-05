@@ -1,0 +1,31 @@
+---
+interface Props {
+  tag: string;
+  /** Puede contener HTML (ej. <br/> o <span>) */
+  title: string;
+  id?: string;
+  subtitle?: string;
+  revealDelay?: string;
+}
+
+const { tag, title, id, subtitle, revealDelay = '150' } = Astro.props;
+---
+
+<div>
+  <div class="mono-tag text-ice-500 flex items-center gap-3 mb-4" data-reveal>
+    <span class="abar"></span>
+    {tag}
+  </div>
+  <h2
+    id={id}
+    class="display text-5xl sm:text-6xl text-steel-900"
+    data-reveal
+    data-delay={revealDelay}
+    set:html={title}
+  />
+  {subtitle && (
+    <p class="text-[--muted] leading-relaxed mt-4" data-reveal data-delay="220">
+      {subtitle}
+    </p>
+  )}
+</div>

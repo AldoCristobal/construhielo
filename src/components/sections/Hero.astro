@@ -1,0 +1,214 @@
+---
+import StatCounter from '../ui/StatCounter.astro';
+import { STATS_HERO } from '../../data/nosotros';
+---
+
+<section
+  id="inicio"
+  class="relative min-h-screen flex items-center overflow-hidden bg-[--bg] paper-texture"
+  aria-label="Inicio"
+>
+  <!-- Radial glow -->
+  <div
+    class="absolute inset-0 pointer-events-none"
+    style="background:radial-gradient(ellipse 70% 60% at 72% 55%, rgba(34,187,212,0.07) 0%, transparent 65%);"
+    aria-hidden="true"
+  ></div>
+
+  <!-- ── DIAGRAMA DE CIRCUITO DE REFRIGERACIÓN (desktop) ── -->
+  <div
+    class="absolute right-0 top-0 bottom-0 w-[52%] hidden lg:flex items-center justify-center pointer-events-none pr-8"
+    aria-hidden="true"
+  >
+    <svg id="hsvg" viewBox="0 0 520 500" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-[560px]">
+      <defs>
+        <linearGradient id="tankGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stop-color="rgba(34,187,212,0.15)"/>
+          <stop offset="100%" stop-color="rgba(34,187,212,0.03)"/>
+        </linearGradient>
+        <linearGradient id="condGrad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%"   stop-color="rgba(35,90,140,0.12)"/>
+          <stop offset="100%" stop-color="rgba(35,90,140,0.04)"/>
+        </linearGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+          <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      <!-- Borde exterior -->
+      <rect x="28" y="28" width="464" height="444" rx="3" stroke="rgba(35,90,140,0.08)" stroke-width="1" stroke-dasharray="8 5"/>
+      <path d="M28 52 L28 28 L52 28"   stroke="rgba(34,187,212,0.35)" stroke-width="1.2" fill="none"/>
+      <path d="M468 28 L492 28 L492 52" stroke="rgba(34,187,212,0.35)" stroke-width="1.2" fill="none"/>
+      <path d="M28 448 L28 472 L52 472" stroke="rgba(34,187,212,0.35)" stroke-width="1.2" fill="none"/>
+      <path d="M468 472 L492 472 L492 448" stroke="rgba(34,187,212,0.35)" stroke-width="1.2" fill="none"/>
+
+      <!-- COMPRESOR -->
+      <g class="anim-in" style="animation-delay:.3s">
+        <circle cx="96" cy="210" r="52" fill="white" stroke="rgba(35,90,140,0.2)" stroke-width="1.2"/>
+        <circle cx="96" cy="210" r="38" fill="none"  stroke="rgba(35,90,140,0.1)" stroke-width="1"/>
+        <circle cx="96" cy="210" r="22" fill="rgba(34,187,212,0.06)" stroke="rgba(34,187,212,0.2)" stroke-width="0.8"/>
+        <g id="cblades" style="transform-origin:96px 210px">
+          {[0,45,90,135,180,225,270,315].map(d => {
+            const r = (d * Math.PI) / 180;
+            return (
+              <path
+                d={`M${96+Math.cos(r)*8} ${210+Math.sin(r)*8} Q${96+Math.cos(r-0.4)*22} ${210+Math.sin(r-0.4)*22} ${96+Math.cos(r)*30} ${210+Math.sin(r)*30}`}
+                stroke="#235a8c" stroke-width="2.2" fill="none" stroke-linecap="round"
+              />
+            );
+          })}
+        </g>
+        <circle cx="96" cy="210" r="7" fill="#22bbd4" filter="url(#glow)"/>
+        <text x="96" y="275" font-family="Space Mono,monospace" font-size="7.5" fill="rgba(35,90,140,0.55)" text-anchor="middle" letter-spacing="1">COMPRESOR</text>
+      </g>
+
+      <!-- CONDENSADOR -->
+      <g class="anim-in" style="animation-delay:.55s">
+        <rect x="172" y="62" width="220" height="70" rx="2" fill="url(#condGrad)" stroke="rgba(35,90,140,0.22)" stroke-width="1.2"/>
+        {[0,1,2].map(row =>
+          Array.from({length:10}).map((_,col) => (
+            <circle cx={183+col*20} cy={78+row*18} r="5" fill="white" stroke="rgba(35,90,140,0.18)" stroke-width="0.8"/>
+          ))
+        )}
+        <text x="282" y="148" font-family="Space Mono,monospace" font-size="7.5" fill="rgba(35,90,140,0.55)" text-anchor="middle" letter-spacing="1">CONDENSADOR</text>
+        <text x="202" y="58"  font-family="Space Mono,monospace" font-size="6.5" fill="rgba(35,90,140,0.35)">+38–45°C</text>
+      </g>
+
+      <!-- TXV -->
+      <g class="anim-in" style="animation-delay:.75s">
+        <rect x="414" y="186" width="34" height="34" rx="2" fill="white" stroke="rgba(35,90,140,0.35)" stroke-width="1.2"/>
+        <path d="M419 191 L431 203 L419 203 Z" fill="rgba(35,90,140,0.18)" stroke="rgba(35,90,140,0.4)" stroke-width="0.7"/>
+        <path d="M443 191 L431 203 L443 203 Z" fill="rgba(35,90,140,0.18)" stroke="rgba(35,90,140,0.4)" stroke-width="0.7"/>
+        <line x1="431" y1="186" x2="431" y2="178" stroke="rgba(35,90,140,0.4)" stroke-width="1.2"/>
+        <rect x="424" y="172" width="14" height="6" rx="1" fill="rgba(35,90,140,0.1)" stroke="rgba(35,90,140,0.3)" stroke-width="0.8"/>
+        <text x="431" y="234" font-family="Space Mono,monospace" font-size="7.5" fill="rgba(35,90,140,0.5)" text-anchor="middle" letter-spacing="1">TXV</text>
+        <text x="448" y="202" font-family="Space Mono,monospace" font-size="6.5" fill="rgba(35,90,140,0.35)">EXP.</text>
+      </g>
+
+      <!-- TANQUE DE BARRAS / EVAPORADOR -->
+      <g class="anim-in" style="animation-delay:.95s">
+        <rect x="148" y="288" width="272" height="158" rx="3" fill="url(#tankGrad)" stroke="rgba(35,90,140,0.25)" stroke-width="1.4"/>
+        <path id="brine-surface" d="M150 352 Q185 348 215 352 Q250 356 284 352 Q318 348 350 352 Q383 356 418 352 L418 444 L150 444 Z" fill="rgba(34,187,212,0.08)"/>
+        {Array.from({length:3}).map((_,row) =>
+          Array.from({length:4}).map((_,col) => (
+            <g>
+              <rect x={158+col*62} y={296+row*46} width="52" height="32" rx="1.5" fill="white" stroke="rgba(35,90,140,0.18)" stroke-width="0.9"/>
+              <rect x={161+col*62} y={299+row*46} width="46" height="26" rx="1" fill="rgba(34,187,212,0.1)"/>
+              <line x1={184+col*62} y1={299+row*46} x2={184+col*62} y2={325+row*46} stroke="rgba(34,187,212,0.3)" stroke-width="0.7"/>
+              <line x1={161+col*62} y1={312+row*46} x2={207+col*62} y2={312+row*46} stroke="rgba(34,187,212,0.3)" stroke-width="0.7"/>
+              <line x1={166+col*62} y1={304+row*46} x2={172+col*62} y2={310+row*46} stroke="rgba(34,187,212,0.18)" stroke-width="0.6"/>
+              <line x1={202+col*62} y1={320+row*46} x2={196+col*62} y2={326+row*46} stroke="rgba(34,187,212,0.18)" stroke-width="0.6"/>
+            </g>
+          ))
+        )}
+        <text x="284" y="460" font-family="Space Mono,monospace" font-size="7.5" fill="rgba(35,90,140,0.5)" text-anchor="middle" letter-spacing="1">TANQUE DE BARRAS · SALMUERA CaCl₂</text>
+        <text x="164" y="280" font-family="Space Mono,monospace" font-size="6.5" fill="rgba(34,187,212,0.5)">−8 a −12°C</text>
+      </g>
+
+      <!-- TUBERÍAS -->
+      <g stroke-linecap="round" stroke-linejoin="round" fill="none">
+        <path d="M96 158 L96 96 L172 96"   stroke="rgba(35,90,140,0.38)" stroke-width="1.8"/>
+        <path d="M392 96 L431 96 L431 186" stroke="rgba(35,90,140,0.3)"  stroke-width="1.8"/>
+        <path d="M431 220 L431 310 L420 310" stroke="rgba(34,187,212,0.45)" stroke-width="1.8"/>
+        <path d="M148 310 L118 310 L118 210" stroke="rgba(34,187,212,0.4)" stroke-width="1.8" stroke-dasharray="6 3"/>
+      </g>
+
+      <!-- Puntos de estado -->
+      {([
+        [118,210,'1'],[96,158,'2'],[392,96,'3'],[431,220,'4'],
+      ] as [number,number,string][]).map(([px,py,lbl]) => (
+        <g class="anim-in" style="animation-delay:1.2s">
+          <circle cx={px} cy={py} r="5"  fill="#22bbd4" opacity="0.85" filter="url(#glow)"/>
+          <circle cx={px} cy={py} r="10" stroke="rgba(34,187,212,0.25)" stroke-width="1" fill="none"/>
+          <text x={px+13} y={py-4} font-family="Space Mono,monospace" font-size="7" fill="rgba(35,90,140,0.6)">{lbl}</text>
+        </g>
+      ))}
+
+      <g id="ptcls"></g>
+    </svg>
+  </div>
+
+  <!-- ── CONTENIDO ── -->
+  <div class="relative z-10 max-w-7xl mx-auto px-5 lg:px-10 pt-28 pb-20 w-full">
+    <div class="lg:max-w-[48%]">
+
+      <div class="mono-tag text-ice-500 flex items-center gap-3 mb-6 opacity-0 animate-[fadeIn_0.6s_0.1s_ease_forwards]">
+        <span class="abar"></span>
+        Puebla, México · Desde 1994
+      </div>
+
+      <h1 class="display text-[4.5rem] sm:text-[5.5rem] xl:text-[6.5rem] text-steel-900 mb-5 opacity-0 animate-[fadeUp_0.82s_0.22s_ease_forwards] leading-none">
+        REFRIGERACIÓN<br/>
+        <span class="grad-text">INDUSTRIAL</span><br/>
+        HECHO EN<br/>MÉXICO
+      </h1>
+
+      <p class="text-[--muted] text-lg leading-relaxed max-w-md mb-10 opacity-0 animate-[fadeUp_0.72s_0.4s_ease_forwards]">
+        Producción de hielo, almacenamiento en frío y transferencia de calor industrial.
+        Diseñamos, fabricamos e instalamos sistemas adaptados exactamente a tu operación
+        — sin soluciones genéricas, sin intermediarios.
+      </p>
+
+      <div class="flex flex-wrap gap-4 mb-14 opacity-0 animate-[fadeUp_0.7s_0.55s_ease_forwards]">
+        <a href="#equipos" class="btn btn-primary">
+          Ver Equipos
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a href="#contacto" class="btn btn-outline">Solicitar Cotización</a>
+      </div>
+
+      <div class="grid grid-cols-3 gap-5 border-t border-[--border] pt-7 opacity-0 animate-[fadeUp_0.7s_0.68s_ease_forwards]">
+        {STATS_HERO.map(s => <StatCounter count={s.count} suffix={s.suffix} label={s.label}/>)}
+      </div>
+    </div>
+  </div>
+
+  <div class="absolute bottom-0 inset-x-0 h-24 pointer-events-none"
+       style="background:linear-gradient(to top,var(--bg),transparent);" aria-hidden="true"></div>
+</section>
+
+<style>
+  .anim-in { opacity: 0; animation: fadeIn 0.8s ease forwards; }
+  @keyframes fadeIn { to { opacity: 1; } }
+  #cblades { animation: spin 2.2s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+
+<script>
+  const g = document.getElementById('ptcls');
+  if (g) {
+    const ns      = 'http://www.w3.org/2000/svg';
+    const circuit = [
+      {x:148,y:310},{x:118,y:310},{x:118,y:270},{x:118,y:230},{x:118,y:210},
+      {x:118,y:158},{x:96,y:96},  {x:172,y:96}, {x:232,y:96}, {x:282,y:96},
+      {x:332,y:96}, {x:392,y:96}, {x:431,y:96}, {x:431,y:140},{x:431,y:186},
+      {x:431,y:220},{x:431,y:270},{x:431,y:310},{x:390,y:310},{x:330,y:310},
+      {x:260,y:310},{x:200,y:310},{x:148,y:310},
+    ];
+    const particles = Array.from({length:14}, (_,i) => {
+      const c   = document.createElementNS(ns, 'circle');
+      const hot = i < 7;
+      c.setAttribute('r',    hot ? '3' : '2.5');
+      c.setAttribute('fill', hot ? 'rgba(35,90,140,0.7)' : 'rgba(34,187,212,0.78)');
+      c.setAttribute('opacity', '0.78');
+      g.appendChild(c);
+      return { el: c, pos: (i/14)*circuit.length, speed: 0.08+Math.random()*0.07 };
+    });
+    const tick = () => {
+      particles.forEach(p => {
+        p.pos = (p.pos + p.speed) % circuit.length;
+        const i0 = Math.floor(p.pos);
+        const t  = p.pos - i0;
+        const a  = circuit[i0];
+        const b  = circuit[(i0+1) % circuit.length];
+        p.el.setAttribute('cx', String(a.x + (b.x-a.x)*t));
+        p.el.setAttribute('cy', String(a.y + (b.y-a.y)*t));
+      });
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+</script>

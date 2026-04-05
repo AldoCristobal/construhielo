@@ -1,0 +1,16 @@
+---
+interface Props {
+  count: number;
+  suffix: string;
+  label: string;
+}
+
+const { count, suffix, label } = Astro.props;
+---
+
+<div>
+  <p class="display text-5xl text-steel-700">
+    <span data-count={count} data-suffix={suffix}>0</span>
+  </p>
+  <p class="mono-tag text-steel-500 text-[11px] mt-2 leading-snug">{label}</p>
+</div>
