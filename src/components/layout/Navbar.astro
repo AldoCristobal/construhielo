@@ -61,19 +61,41 @@ import { NAV } from '../../data/nav';
   const icoO  = document.getElementById('ico-o');
   const icoC  = document.getElementById('ico-c');
 
+  let overlay: HTMLDivElement | null = null;
+
+  function openMenu() {
+    mmenu?.classList.remove('hidden');
+    hbtn?.setAttribute('aria-expanded', 'true');
+    icoO?.classList.add('hidden');
+    icoC?.classList.remove('hidden');
+    // Crear overlay
+    overlay = document.createElement('div');
+    overlay.className = 'fixed inset-0 bg-black/20 backdrop-blur-[1px] z-40';
+    overlay.setAttribute('aria-hidden', 'true');
+    overlay.addEventListener('click', closeMenu);
+    document.body.appendChild(overlay);
+  }
+
+  function closeMenu() {
+    mmenu?.classList.add('hidden');
+    hbtn?.setAttribute('aria-expanded', 'false');
+    icoO?.classList.remove('hidden');
+    icoC?.classList.add('hidden');
+    overlay?.remove();
+    overlay = null;
+  }
+
   hbtn?.addEventListener('click', () => {
-    const open = mmenu?.classList.toggle('hidden') === false;
-    hbtn.setAttribute('aria-expanded', String(open));
-    icoO?.classList.toggle('hidden', open);
-    icoC?.classList.toggle('hidden', !open);
+    const isOpen = mmenu?.classList.contains('hidden') === false;
+    isOpen ? closeMenu() : openMenu();
   });
 
   document.querySelectorAll('.mob-link').forEach(l =>
-    l.addEventListener('click', () => {
-      mmenu?.classList.add('hidden');
-      hbtn?.setAttribute('aria-expanded', 'false');
-      icoO?.classList.remove('hidden');
-      icoC?.classList.add('hidden');
-    })
+    l.addEventListener('click', closeMenu)
   );
+
+  // Cerrar con Escape
+  document.addEventListener('keydown', (e: KeyboardEvent) => {
+    if (e.key === 'Escape') closeMenu();
+  });
 </script>

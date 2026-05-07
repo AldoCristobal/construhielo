@@ -341,7 +341,7 @@ const GALLERIES = [
         <div id="eq-track">
           {EQUIPOS.map((eq, idx) => (
             <div class:list={['eq-slide', idx === 0 ? 'is-active' : '']} data-idx={String(idx)}>
-              <div class="card bg-white p-7 relative">
+              <div class="card bg-white p-4 sm:p-7 relative">
                 <div class="cbr absolute bottom-3 right-3"></div>
                 <span class="mono-tag text-[9px] text-ice-500">{eq.tag}</span>
                 <div class="flex items-start justify-between mt-2 mb-5">
