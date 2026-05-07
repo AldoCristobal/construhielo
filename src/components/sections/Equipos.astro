@@ -1,6 +1,38 @@
 ---
 import SectionHeader from '../ui/SectionHeader.astro';
 import { EQUIPOS } from '../../data/equipos';
+
+const GALLERIES = [
+  /* 01 — Rolito */
+  [
+    { src: '/images/galeria/eq1-1.png', title: 'Máquina de Rolito — ConstruHielo' },
+    { src: '/images/galeria/eq1-2.png', title: 'Máquina de Rolito — ConstruHielo' },
+    { src: '/images/galeria/eq1-3.png', title: 'Máquina de Rolito — ConstruHielo' },
+    { src: '/images/galeria/eq1-4.png', title: 'Máquina de Rolito — ConstruHielo' },
+  ],
+  /* 02 — Barras */
+  [
+    { src: '/images/galeria/eq2-1.png', title: 'Tanque de Barras — ConstruHielo' },
+    { src: '/images/galeria/eq2-2.png', title: 'Tanque de Barras — ConstruHielo' },
+    { src: '/images/galeria/eq2-3.png', title: 'Tanque de Barras — ConstruHielo' },
+    { src: '/images/galeria/eq2-4.png', title: 'Tanque de Barras — ConstruHielo' },
+  ],
+  /* 03 — Cámara */
+  [
+    { src: '/images/galeria/eq3-1.png', title: 'Cámara Frigorífica — ConstruHielo' },
+    { src: '/images/galeria/eq3-2.png', title: 'Cámara Frigorífica — ConstruHielo' },
+    { src: '/images/galeria/eq3-3.png', title: 'Cámara Frigorífica — ConstruHielo' },
+    { src: '/images/galeria/eq3-4.png', title: 'Cámara Frigorífica — ConstruHielo' },
+  ],
+  /* 04 — Evaporador */
+  [
+    { src: '/images/galeria/eq4-1.png', title: 'Evaporador Industrial — ConstruHielo' },
+    { src: '/images/galeria/eq4-2.png', title: 'Evaporador Industrial — ConstruHielo' },
+    { src: '/images/galeria/eq4-3.png', title: 'Evaporador Industrial — ConstruHielo' },
+    { src: '/images/galeria/eq4-4.png', title: 'Evaporador Industrial — ConstruHielo' },
+    { src: '/images/galeria/eq4-5.png', title: 'Evaporador Industrial — ConstruHielo' },
+  ],
+];
 ---
 
 <section id="equipos" class="py-28 bg-[--surface2] relative" aria-labelledby="eq-h">
@@ -13,11 +45,7 @@ import { EQUIPOS } from '../../data/equipos';
 
     <!-- Encabezado -->
     <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-14" data-reveal>
-      <SectionHeader
-        tag="Equipos"
-        title="TODO SALE<br/>DE NUESTRO TALLER"
-        id="eq-h"
-      />
+      <SectionHeader tag="Equipos" title="TODO SALE<br/>DE NUESTRO TALLER" id="eq-h" />
       <p class="text-[--muted] text-sm max-w-xs leading-relaxed">
         Fabricado en Puebla. Sin importaciones, sin intermediarios.
         Control total del proceso, el material y el precio final.
@@ -28,141 +56,190 @@ import { EQUIPOS } from '../../data/equipos';
     <div class="grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-6 lg:gap-10">
 
       <!-- ── Columna izquierda: Diagrama + Galería ── -->
-      <div>
+      <!-- order-2: en mobile la galería va debajo de la card -->
+      <div class="order-2 lg:order-1">
 
-        <!-- Panel del diagrama -->
-        <div class="border border-[--border] bg-white relative overflow-hidden" style="height:460px" id="eq-diagram">
+        <!-- Panel del diagrama — solo desktop -->
+        <div class="hidden lg:block border border-[--border] bg-white relative overflow-hidden" style="height:460px" id="eq-diagram">
           <div class="ctl absolute top-3 left-3 z-10"></div>
           <div class="cbr absolute bottom-3 right-3 z-10"></div>
 
           <!-- Tag + Número -->
           <div class="absolute top-5 left-6 right-6 flex items-center justify-between z-10">
-            <span id="eq-tag"
-                  class="mono-tag text-[9px] px-2 py-1 bg-steel-50 border border-[--border] text-ice-600">
+            <span id="eq-tag" class="mono-tag text-[9px] px-2 py-1 bg-steel-50 border border-[--border] text-ice-600">
               {EQUIPOS[0].tag}
             </span>
-            <span id="eq-num"
-                  class="display text-7xl text-steel-100 select-none leading-none">
+            <span id="eq-num" class="display text-7xl text-steel-100 select-none leading-none">
               {EQUIPOS[0].num}
             </span>
           </div>
 
-          <!-- Canvases SVG -->
-          {EQUIPOS.map((eq, idx) => (
-            <div
-              id={`eq-canvas-${eq.id}`}
-              class:list={[
-                'absolute inset-0 transition-opacity duration-500',
-                idx === 0 ? 'opacity-100' : 'opacity-0',
-              ]}
-              aria-hidden="true"
-            >
-              <svg viewBox="0 0 420 560" fill="none" class="w-full h-full">
-                {eq.id === 'rolito' && (
+          <!-- ── Canvases SVG animados ── -->
+          <div class="absolute inset-0 flex items-center justify-center">
+
+            <!-- 01: Máquina de Rolito -->
+            <svg id="eq-canvas-rolito" class="eq-anim w-full h-full is-active" viewBox="0 0 400 420" fill="none">
+              <defs>
+                <linearGradient id="iceGrad1" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="rgba(34,187,212,0.25)"/>
+                  <stop offset="100%" stop-color="rgba(34,187,212,0.05)"/>
+                </linearGradient>
+              </defs>
+              <rect x="80" y="60" width="240" height="280" rx="3" fill="white" stroke="rgba(35,90,140,0.2)" stroke-width="1.5"/>
+              <rect x="80" y="60" width="240" height="28" rx="3" fill="rgba(35,90,140,0.05)" stroke="rgba(35,90,140,0.2)" stroke-width="1.5"/>
+              <text x="200" y="79" font-family="Space Mono,monospace" font-size="8" fill="rgba(35,90,140,0.5)" text-anchor="middle" letter-spacing="2">MÁQUINA DE ROLITO</text>
+              <g id="drum" style="transform-origin:200px 210px">
+                <circle cx="200" cy="210" r="90" fill="url(#iceGrad1)" stroke="rgba(34,187,212,0.3)" stroke-width="1.5"/>
+                <circle cx="200" cy="210" r="70" fill="none" stroke="rgba(35,90,140,0.1)" stroke-width="1" stroke-dasharray="5 4"/>
+                {Array.from({length:12}).map((_,i) => {
+                  const a = (i/12)*Math.PI*2;
+                  const rx = 200+Math.cos(a)*58, ry = 210+Math.sin(a)*58;
+                  return (
+                    <g>
+                      <circle cx={rx} cy={ry} r="10" fill="white" stroke="rgba(35,90,140,0.25)" stroke-width="1"/>
+                      <circle cx={rx} cy={ry} r="5"  fill="rgba(34,187,212,0.2)" stroke="rgba(34,187,212,0.4)" stroke-width="0.8"/>
+                    </g>
+                  );
+                })}
+                <circle cx="200" cy="210" r="16" fill="rgba(35,90,140,0.08)" stroke="rgba(35,90,140,0.2)" stroke-width="1"/>
+                <circle cx="200" cy="210" r="6"  fill="#235a8c" opacity="0.6"/>
+              </g>
+              <g id="ice-tubes">
+                {Array.from({length:6}).map((_,i) => (
+                  <rect x={98+i*26} y={355+((i%3)*8)} width="12" height="22" rx="6"
+                        fill="rgba(34,187,212,0.18)" stroke="rgba(34,187,212,0.4)" stroke-width="0.8"
+                        class="ice-tube-fall" style={`animation-delay:${i*0.18}s`}/>
+                ))}
+              </g>
+              <line x1="200" y1="40" x2="200" y2="60" stroke="rgba(34,187,212,0.5)" stroke-width="2" stroke-dasharray="4 2"/>
+              <text x="215" y="52" font-family="Space Mono,monospace" font-size="6.5" fill="rgba(34,187,212,0.5)">AGUA</text>
+              <line x1="200" y1="340" x2="200" y2="360" stroke="rgba(34,187,212,0.4)" stroke-width="2"/>
+              <text x="215" y="372" font-family="Space Mono,monospace" font-size="6.5" fill="rgba(34,187,212,0.5)">HIELO TUBULAR</text>
+              <text x="200" y="405" font-family="Space Mono,monospace" font-size="7" fill="rgba(35,90,140,0.4)" text-anchor="middle">1 – 60 T / 24H · NH₃ O FREON</text>
+            </svg>
+
+            <!-- 02: Tanque de Barras -->
+            <svg id="eq-canvas-barras" class="eq-anim w-full h-full" viewBox="0 0 400 420" fill="none">
+              <defs>
+                <linearGradient id="brineGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="rgba(34,187,212,0.15)"/>
+                  <stop offset="100%" stop-color="rgba(34,187,212,0.04)"/>
+                </linearGradient>
+              </defs>
+              <rect x="60" y="80" width="280" height="240" rx="3" fill="url(#brineGrad)" stroke="rgba(35,90,140,0.22)" stroke-width="1.5"/>
+              <text x="200" y="72" font-family="Space Mono,monospace" font-size="8" fill="rgba(35,90,140,0.5)" text-anchor="middle" letter-spacing="2">TANQUE DE BARRAS</text>
+              <rect x="62" y="230" width="276" height="88" rx="2" fill="rgba(34,187,212,0.1)" id="brine-lvl"/>
+              <path id="brine-wave" d="M62 230 Q110 226 160 230 Q210 234 260 230 Q310 226 338 230" stroke="rgba(34,187,212,0.35)" stroke-width="1.2" fill="none"/>
+              {Array.from({length:2}).map((_,row) =>
+                Array.from({length:4}).map((_,col) => (
                   <g>
-                    <text x="210" y="50" font-family="Space Mono,monospace" font-size="9"
-                          fill="rgba(35,90,140,0.4)" text-anchor="middle" letter-spacing="1">
-                      MÁQUINA DE ROLITO
-                    </text>
-                    <circle cx="210" cy="290" r="180" fill="rgba(34,187,212,0.04)" stroke="rgba(35,90,140,0.12)" stroke-width="1.5"/>
-                    <circle cx="210" cy="290" r="140" fill="rgba(34,187,212,0.06)" stroke="rgba(35,90,140,0.1)" stroke-width="1"/>
-                    <circle cx="210" cy="290" r="22"  fill="rgba(34,187,212,0.2)"  stroke="rgba(34,187,212,0.5)" stroke-width="1.5"/>
-                    <circle cx="210" cy="290" r="6"   fill="#22bbd4"/>
-                    {Array.from({length:18}).map((_,i) => {
-                      const a = (i/18)*Math.PI*2;
-                      return (
-                        <g>
-                          <circle cx={210+Math.cos(a)*90} cy={290+Math.sin(a)*90} r="22" fill="white" stroke="rgba(35,90,140,0.2)" stroke-width="1.2"/>
-                          <circle cx={210+Math.cos(a)*90} cy={290+Math.sin(a)*90} r="14" fill="rgba(34,187,212,0.08)" stroke="rgba(34,187,212,0.25)" stroke-width="0.8"/>
-                          <line x1={210+Math.cos(a)*32} y1={290+Math.sin(a)*32}
-                                x2={210+Math.cos(a)*130} y2={290+Math.sin(a)*130}
-                                stroke="rgba(35,90,140,0.08)" stroke-width="0.8" stroke-dasharray="3 3"/>
-                        </g>
-                      );
-                    })}
-                    <text x="210" y="510" font-family="Space Mono,monospace" font-size="8"
-                          fill="rgba(35,90,140,0.4)" text-anchor="middle" letter-spacing="1">
-                      HIELO TUBULAR · CORTE TRANSVERSAL
-                    </text>
+                    <rect x={70+col*64} y={92+row*110} width="54" height="88" rx="2" fill="white" stroke="rgba(35,90,140,0.2)" stroke-width="1"/>
+                    <rect x={74+col*64} y={96+row*110} width="46" height="80" rx="1.5" fill="rgba(34,187,212,0.12)"/>
+                    <line x1={97+col*64} y1={96+row*110}  x2={97+col*64}  y2={176+row*110} stroke="rgba(34,187,212,0.35)" stroke-width="0.8"/>
+                    <line x1={74+col*64} y1={136+row*110} x2={120+col*64} y2={136+row*110} stroke="rgba(34,187,212,0.35)" stroke-width="0.8"/>
                   </g>
-                )}
-                {eq.id === 'barras' && (
+                ))
+              )}
+              <text x="200" y="340" font-family="Space Mono,monospace" font-size="7.5" fill="rgba(34,187,212,0.55)" text-anchor="middle">SALMUERA CaCl₂ · −8°C</text>
+              <g id="bubbles">
+                {Array.from({length:8}).map((_,i) => (
+                  <circle cx={80+i*35} cy={315} r="2.5" fill="rgba(34,187,212,0.3)" class="bubble-rise" style={`animation-delay:${i*0.3}s`}/>
+                ))}
+              </g>
+              <text x="200" y="405" font-family="Space Mono,monospace" font-size="7" fill="rgba(35,90,140,0.4)" text-anchor="middle">BLOQUES 50 / 75 / 150 KG · CAPACIDAD A MEDIDA</text>
+            </svg>
+
+            <!-- 03: Cámara Frigorífica -->
+            <svg id="eq-canvas-camara" class="eq-anim w-full h-full" viewBox="0 0 400 420" fill="none">
+              <defs>
+                <linearGradient id="coldGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="rgba(34,187,212,0.08)"/>
+                  <stop offset="100%" stop-color="rgba(34,187,212,0.02)"/>
+                </linearGradient>
+              </defs>
+              <rect x="60" y="70" width="280" height="260" rx="2" fill="url(#coldGrad)" stroke="rgba(35,90,140,0.22)" stroke-width="1.5"/>
+              {Array.from({length:7}).map((_,i) => (
+                <line x1="62" y1={100+i*32} x2="338" y2={100+i*32} stroke="rgba(35,90,140,0.07)" stroke-width="1.5"/>
+              ))}
+              <line x1="100" y1="72" x2="100" y2="328" stroke="rgba(35,90,140,0.07)" stroke-width="1.5"/>
+              <line x1="300" y1="72" x2="300" y2="328" stroke="rgba(35,90,140,0.07)" stroke-width="1.5"/>
+              <rect x="155" y="200" width="90" height="130" rx="1" fill="rgba(35,90,140,0.05)" stroke="rgba(35,90,140,0.3)" stroke-width="1.5"/>
+              <rect x="160" y="205" width="80" height="120" rx="1" fill="none" stroke="rgba(35,90,140,0.15)" stroke-width="1.5" stroke-dasharray="3 2"/>
+              <rect x="236" y="258" width="6" height="20" rx="3" fill="rgba(35,90,140,0.25)" stroke="rgba(35,90,140,0.4)" stroke-width="0.8"/>
+              <rect x="100" y="78" width="200" height="30" rx="1" fill="rgba(35,90,140,0.08)" stroke="rgba(35,90,140,0.2)" stroke-width="1"/>
+              {[0,1,2].map(i => (
+                <g style={`transform-origin:${145+i*55}px 93px;animation:fanRot 0.8s linear ${i*0.2}s infinite`}>
+                  {[0,120,240].map(d => {
+                    const r = d*Math.PI/180;
+                    return (
+                      <path d={`M${145+i*55} 93 Q${145+i*55+Math.cos(r-0.5)*11} ${93+Math.sin(r-0.5)*11} ${145+i*55+Math.cos(r)*14} ${93+Math.sin(r)*14}`}
+                            stroke="rgba(35,90,140,0.3)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                    );
+                  })}
+                  <circle cx={145+i*55} cy={93} r="3" fill="rgba(35,90,140,0.2)"/>
+                </g>
+              ))}
+              <g id="cold-air">
+                {Array.from({length:5}).map((_,i) => (
+                  <line x1={90+i*52} y1="108" x2={90+i*52} y2={140+i*12}
+                        stroke="rgba(34,187,212,0.25)" stroke-width="1" class="air-drop" style={`animation-delay:${i*0.25}s`}/>
+                ))}
+              </g>
+              <rect x="250" y="130" width="72" height="44" rx="1" fill="white" stroke="rgba(35,90,140,0.2)" stroke-width="1"/>
+              <text x="286" y="147" font-family="Space Mono,monospace" font-size="7"  fill="rgba(35,90,140,0.4)" text-anchor="middle">TEMP</text>
+              <text x="286" y="165" font-family="Space Mono,monospace" font-size="13" fill="rgba(34,187,212,0.8)" text-anchor="middle">−18°C</text>
+              <text x="200" y="58"  font-family="Space Mono,monospace" font-size="8"  fill="rgba(35,90,140,0.5)" text-anchor="middle" letter-spacing="2">CÁMARA FRIGORÍFICA</text>
+              <text x="200" y="355" font-family="Space Mono,monospace" font-size="7"  fill="rgba(35,90,140,0.35)" text-anchor="middle">PANEL PIR/PUR ALTA DENSIDAD</text>
+              <text x="200" y="405" font-family="Space Mono,monospace" font-size="7"  fill="rgba(35,90,140,0.4)" text-anchor="middle">−40°C A +8°C · DIMENSIONES A MEDIDA</text>
+            </svg>
+
+            <!-- 04: Condensador / Evaporador Industrial -->
+            <svg id="eq-canvas-evap" class="eq-anim w-full h-full" viewBox="0 0 400 420" fill="none">
+              <defs>
+                <linearGradient id="shellGrad" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="rgba(35,90,140,0.1)"/>
+                  <stop offset="100%" stop-color="rgba(35,90,140,0.03)"/>
+                </linearGradient>
+              </defs>
+              <rect x="50" y="140" width="300" height="140" rx="70" fill="url(#shellGrad)" stroke="rgba(35,90,140,0.25)" stroke-width="1.5"/>
+              <ellipse cx="50"  cy="210" rx="28" ry="70" fill="rgba(35,90,140,0.06)" stroke="rgba(35,90,140,0.2)" stroke-width="1.2"/>
+              <ellipse cx="350" cy="210" rx="28" ry="70" fill="rgba(35,90,140,0.06)" stroke="rgba(35,90,140,0.2)" stroke-width="1.2"/>
+              {Array.from({length:5}).map((_,row) =>
+                Array.from({length:3}).map((_,col) => (
                   <g>
-                    <text x="210" y="50" font-family="Space Mono,monospace" font-size="9"
-                          fill="rgba(35,90,140,0.4)" text-anchor="middle" letter-spacing="1">
-                      TANQUE DE BARRAS
-                    </text>
-                    <rect x="60" y="80" width="300" height="380" rx="3" fill="rgba(34,187,212,0.05)" stroke="rgba(35,90,140,0.2)" stroke-width="1.5"/>
-                    <path d="M62 260 Q100 255 135 260 Q175 265 210 260 Q245 255 280 260 Q315 265 358 260 L358 458 L62 458 Z" fill="rgba(34,187,212,0.07)"/>
-                    {Array.from({length:3}).map((_,row) =>
-                      Array.from({length:4}).map((_,col) => (
-                        <g>
-                          <rect x={72+col*66} y={90+row*54} width="56" height="36" rx="2" fill="white" stroke="rgba(35,90,140,0.18)" stroke-width="1"/>
-                          <rect x={75+col*66} y={93+row*54} width="50" height="30" rx="1" fill="rgba(34,187,212,0.1)"/>
-                          <line x1={100+col*66} y1={93+row*54} x2={100+col*66} y2={123+row*54} stroke="rgba(34,187,212,0.3)" stroke-width="0.8"/>
-                          <line x1={75+col*66}  y1={108+row*54} x2={125+col*66} y2={108+row*54} stroke="rgba(34,187,212,0.3)" stroke-width="0.8"/>
-                        </g>
-                      ))
-                    )}
-                    <text x="210" y="510" font-family="Space Mono,monospace" font-size="8"
-                          fill="rgba(35,90,140,0.4)" text-anchor="middle" letter-spacing="1">
-                      SALMUERA CaCl₂ · −8 a −12°C
-                    </text>
+                    <rect x={100+col*72} y={160+row*24} width="56" height="18" rx="9" fill="white" stroke="rgba(35,90,140,0.18)" stroke-width="1"/>
+                    <rect x={104+col*72} y={164+row*24} width="48" height="10" rx="5" fill="rgba(34,187,212,0.12)"/>
+                    <circle cx={52}  cy={169+row*24} r="7" fill="white" stroke="rgba(35,90,140,0.15)" stroke-width="0.8"/>
+                    <circle cx={52}  cy={169+row*24} r="4" fill="rgba(34,187,212,0.15)"/>
+                    <circle cx={352} cy={169+row*24} r="7" fill="white" stroke="rgba(35,90,140,0.15)" stroke-width="0.8"/>
+                    <circle cx={352} cy={169+row*24} r="4" fill="rgba(35,90,140,0.12)"/>
                   </g>
-                )}
-                {eq.id === 'camara' && (
-                  <g>
-                    <text x="210" y="50" font-family="Space Mono,monospace" font-size="9"
-                          fill="rgba(35,90,140,0.4)" text-anchor="middle" letter-spacing="1">
-                      CÁMARA FRIGORÍFICA
-                    </text>
-                    <rect x="60" y="80" width="300" height="360" rx="3" fill="rgba(34,187,212,0.04)" stroke="rgba(35,90,140,0.2)" stroke-width="1.5"/>
-                    {Array.from({length:5}).map((_,i) => (
-                      <line x1="60" y1={80+i*72} x2="360" y2={80+i*72} stroke="rgba(35,90,140,0.06)" stroke-width="0.8"/>
-                    ))}
-                    {Array.from({length:5}).map((_,i) => (
-                      <line x1={60+i*60} y1="80" x2={60+i*60} y2="440" stroke="rgba(35,90,140,0.06)" stroke-width="0.8"/>
-                    ))}
-                    <rect x="120" y="340" width="60" height="100" rx="2" fill="rgba(34,187,212,0.1)" stroke="rgba(35,90,140,0.3)" stroke-width="1.5"/>
-                    <rect x="140" y="360" width="20" height="40" rx="1" fill="rgba(34,187,212,0.2)"/>
-                    <rect x="230" y="100" width="90" height="60" rx="2" fill="white" stroke="rgba(35,90,140,0.2)" stroke-width="1"/>
-                    <text x="275" y="136" font-family="Space Mono,monospace" font-size="10" fill="rgba(34,187,212,0.8)" text-anchor="middle">−18°C</text>
-                    {[130,200,270,340].map(x => (
-                      <path d={`M${x} 140 Q${x+10} 120 ${x+20} 140 Q${x+30} 160 ${x+40} 140`}
-                            stroke="rgba(34,187,212,0.3)" stroke-width="1" fill="none"/>
-                    ))}
-                    <text x="210" y="510" font-family="Space Mono,monospace" font-size="8"
-                          fill="rgba(35,90,140,0.4)" text-anchor="middle" letter-spacing="1">
-                      PANEL PIR/PUR · PUERTA ISOTÉRMICA
-                    </text>
-                  </g>
-                )}
-                {eq.id === 'evap' && (
-                  <g>
-                    <text x="210" y="50" font-family="Space Mono,monospace" font-size="9"
-                          fill="rgba(35,90,140,0.4)" text-anchor="middle" letter-spacing="1">
-                      CONDENSADOR INDUSTRIAL
-                    </text>
-                    <ellipse cx="210" cy="290" rx="100" ry="175" fill="rgba(34,187,212,0.04)" stroke="rgba(35,90,140,0.2)" stroke-width="1.5"/>
-                    {Array.from({length:7}).map((_,i) => (
-                      <ellipse cx="210" cy={210+i*24} rx="66" ry="10" fill="white" stroke="rgba(35,90,140,0.15)" stroke-width="0.9"/>
-                    ))}
-                    <rect x="178" y="100" width="64" height="22" rx="2" fill="rgba(34,187,212,0.1)" stroke="rgba(35,90,140,0.3)" stroke-width="1"/>
-                    <text x="210" y="115" font-family="Space Mono,monospace" font-size="7" fill="rgba(35,90,140,0.6)" text-anchor="middle">NH₃ IN</text>
-                    <rect x="178" y="445" width="64" height="22" rx="2" fill="rgba(35,90,140,0.08)" stroke="rgba(35,90,140,0.3)" stroke-width="1"/>
-                    <text x="210" y="460" font-family="Space Mono,monospace" font-size="7" fill="rgba(35,90,140,0.6)" text-anchor="middle">NH₃ OUT</text>
-                    <rect x="272" y="268" width="58" height="44" rx="2" fill="white" stroke="rgba(35,90,140,0.25)" stroke-width="1"/>
-                    <text x="301" y="286" font-family="Space Mono,monospace" font-size="7" fill="rgba(35,90,140,0.5)" text-anchor="middle">ASME</text>
-                    <text x="301" y="300" font-family="Space Mono,monospace" font-size="7" fill="rgba(34,187,212,0.7)" text-anchor="middle">✓</text>
-                    <text x="210" y="510" font-family="Space Mono,monospace" font-size="8"
-                          fill="rgba(35,90,140,0.4)" text-anchor="middle" letter-spacing="1">
-                      CASCO Y TUBO · NH₃ / FREON
-                    </text>
-                  </g>
-                )}
-              </svg>
-            </div>
-          ))}
+                ))
+              )}
+              <rect x="170" y="115" width="30" height="25" rx="2" fill="rgba(35,90,140,0.08)" stroke="rgba(35,90,140,0.25)" stroke-width="1.2"/>
+              <text x="185" y="108" font-family="Space Mono,monospace" font-size="6.5" fill="rgba(35,90,140,0.4)" text-anchor="middle">NH₃ IN</text>
+              <rect x="200" y="280" width="30" height="25" rx="2" fill="rgba(34,187,212,0.08)" stroke="rgba(34,187,212,0.3)" stroke-width="1.2"/>
+              <text x="215" y="318" font-family="Space Mono,monospace" font-size="6.5" fill="rgba(34,187,212,0.5)" text-anchor="middle">NH₃ OUT</text>
+              <g id="evap-flow"></g>
+              <rect x="278" y="188" width="58" height="44" rx="1" fill="white" stroke="rgba(35,90,140,0.15)" stroke-width="1"/>
+              <text x="307" y="203" font-family="Space Mono,monospace" font-size="7" fill="rgba(35,90,140,0.4)" text-anchor="middle">ASME</text>
+              <text x="307" y="215" font-family="Space Mono,monospace" font-size="6" fill="rgba(35,90,140,0.3)" text-anchor="middle">CERTIF.</text>
+              <text x="307" y="225" font-family="Space Mono,monospace" font-size="8" fill="rgba(35,90,140,0.5)" text-anchor="middle">✓</text>
+              {Array.from({length:8}).map((_,i) => {
+                const a = (i/8)*Math.PI*2;
+                return (
+                  <>
+                    <circle cx={50+Math.cos(a)*22}  cy={210+Math.sin(a)*62} r="3" fill="rgba(35,90,140,0.15)" stroke="rgba(35,90,140,0.3)" stroke-width="0.8"/>
+                    <circle cx={350+Math.cos(a)*22} cy={210+Math.sin(a)*62} r="3" fill="rgba(35,90,140,0.15)" stroke="rgba(35,90,140,0.3)" stroke-width="0.8"/>
+                  </>
+                );
+              })}
+              <text x="200" y="58" font-family="Space Mono,monospace" font-size="8" fill="rgba(35,90,140,0.5)" text-anchor="middle" letter-spacing="2">CONDENSADOR INDUSTRIAL</text>
+              <text x="200" y="75" font-family="Space Mono,monospace" font-size="7" fill="rgba(35,90,140,0.35)" text-anchor="middle">CASCO Y TUBO · NH₃ / FREON</text>
+              <text x="200" y="405" font-family="Space Mono,monospace" font-size="7" fill="rgba(35,90,140,0.4)" text-anchor="middle">NH₃ / FREON · NORMA ASME · TALLER PROPIO</text>
+            </svg>
+
+          </div><!-- /anim container -->
 
           <!-- Botón Cotiza -->
           <div class="absolute bottom-8 left-6 z-10">
@@ -177,85 +254,75 @@ import { EQUIPOS } from '../../data/equipos';
           <!-- Dots de navegación -->
           <div class="absolute bottom-9 right-6 flex items-center gap-2 z-10">
             {EQUIPOS.map((_, i) => (
-              <button
-                class:list={['eq-dot', i === 0 ? 'is-active' : '']}
-                data-to={String(i)}
-                aria-label={`Ir a equipo ${i + 1}`}
-              ></button>
+              <button class:list={['eq-dot', i === 0 ? 'is-active' : '']} data-to={String(i)} aria-label={`Ir a equipo ${i + 1}`}></button>
             ))}
           </div>
         </div>
 
-        <!-- Galería de fotos -->
-        <div class="grid grid-cols-3 gap-3 mt-3">
-
-          <!-- Foto real 1 -->
-          <a href="/images/productos/evaporador.png"
-             class="glightbox border border-[--border] bg-steel-900 relative overflow-hidden group block"
-             data-gallery="eq-gallery"
-             data-title="Evaporador Industrial — ConstruHielo"
-             style="aspect-ratio:16/9"
-             aria-label="Ver evaporador en tamaño completo">
-            <div class="ctl absolute top-2 left-2 z-10"></div>
-            <img
-              src="/images/productos/evaporador.png"
-              alt="Evaporador industrial ConstruHielo"
-              class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
-              loading="lazy"
-            />
-            <div class="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/20 transition-colors duration-300">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                   class="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow" aria-hidden="true">
-                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-          </a>
-
-          <!-- Foto real 2 -->
-          <a href="/images/productos/condensador.png"
-             class="glightbox border border-[--border] bg-white relative overflow-hidden group block"
-             data-gallery="eq-gallery"
-             data-title="Condensador Industrial — ConstruHielo"
-             style="aspect-ratio:16/9"
-             aria-label="Ver condensador en tamaño completo">
-            <div class="ctl absolute top-2 left-2 z-10"></div>
-            <img
-              src="/images/productos/condensador.png"
-              alt="Condensador industrial ConstruHielo"
-              class="w-full h-full object-contain object-center transition-transform duration-500 group-hover:scale-105 p-1"
-              loading="lazy"
-            />
-            <div class="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/20 transition-colors duration-300">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                   class="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow" aria-hidden="true">
-                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-          </a>
-
-          <!-- Placeholder: más fotos próximamente -->
-          <div class="border border-[--border] border-dashed bg-steel-50 relative overflow-hidden flex flex-col items-center justify-center gap-2"
-               style="aspect-ratio:16/9">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                 class="text-steel-300" aria-hidden="true">
-              <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"
-                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <circle cx="12" cy="13" r="4" stroke="currentColor" stroke-width="1.5"/>
-            </svg>
-            <p class="mono-tag text-[8px] text-steel-300">MÁS FOTOS</p>
+        <!-- Galerías dinámicas — una por equipo, solo la activa es visible -->
+        {GALLERIES.map((imgs, gIdx) => (
+          <div
+            class:list={['grid grid-cols-2 sm:grid-cols-3 gap-3 mt-3', gIdx !== 0 && 'hidden']}
+            data-eq-gallery={String(gIdx)}
+          >
+            {/* 3 thumbnails visibles */}
+            {imgs.slice(0, 3).map((img, iIdx) => {
+              const extra = imgs.length - 3;
+              const isLast = iIdx === 2;
+              return (
+                <a
+                  href={img.src}
+                  class="glightbox border border-[--border] bg-steel-900 relative overflow-hidden group block"
+                  data-gallery={`eq-gallery-${gIdx}`}
+                  data-title={img.title}
+                  style="aspect-ratio:16/9"
+                  aria-label={`Ver imagen ${iIdx + 1} de ${imgs[0].title}`}
+                >
+                  <div class="ctl absolute top-2 left-2 z-10"></div>
+                  <img
+                    src={img.src}
+                    alt={img.title}
+                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                  <div class="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/30 transition-colors duration-300">
+                    {isLast && extra > 0 ? (
+                      <span class="mono-tag text-white text-[11px] bg-black/55 px-2.5 py-1 rounded-sm">
+                        +{extra} más
+                      </span>
+                    ) : (
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                           class="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                           aria-hidden="true">
+                        <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"
+                              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    )}
+                  </div>
+                </a>
+              );
+            })}
+            {/* Links ocultos para imágenes 4+ — se incluyen en el lightbox */}
+            {imgs.slice(3).map(img => (
+              <a
+                href={img.src}
+                class="glightbox hidden"
+                data-gallery={`eq-gallery-${gIdx}`}
+                data-title={img.title}
+                aria-hidden="true"
+              ></a>
+            ))}
           </div>
-
-        </div>
+        ))}
       </div>
 
       <!-- ── Columna derecha: Controles + Card animada ── -->
-      <div class="flex flex-col">
+      <!-- order-1: en mobile la card va primero -->
+      <div class="flex flex-col order-1 lg:order-2">
 
         <!-- Controles de navegación -->
         <div class="flex items-center gap-4 mb-5">
-          <button id="eq-prev"
-                  class="w-9 h-9 border border-[--border] flex items-center justify-center text-[--muted] hover:border-steel-400 hover:text-steel-700 transition-all"
-                  aria-label="Equipo anterior">
+          <button id="eq-prev" class="w-9 h-9 border border-[--border] flex items-center justify-center text-[--muted] hover:border-steel-400 hover:text-steel-700 transition-all" aria-label="Equipo anterior">
             <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
               <path d="M10 4L6 8l4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -263,37 +330,29 @@ import { EQUIPOS } from '../../data/equipos';
           <span id="eq-counter" class="mono-tag text-[10px] text-[--muted] tabular-nums">
             01 / 0{EQUIPOS.length}
           </span>
-          <button id="eq-next"
-                  class="w-9 h-9 border border-[--border] flex items-center justify-center text-[--muted] hover:border-steel-400 hover:text-steel-700 transition-all"
-                  aria-label="Equipo siguiente">
+          <button id="eq-next" class="w-9 h-9 border border-[--border] flex items-center justify-center text-[--muted] hover:border-steel-400 hover:text-steel-700 transition-all" aria-label="Equipo siguiente">
             <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
               <path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </button>
         </div>
 
-        <!-- Track de cards (apiladas en grid, una visible a la vez) -->
+        <!-- Track de cards -->
         <div id="eq-track">
           {EQUIPOS.map((eq, idx) => (
             <div class:list={['eq-slide', idx === 0 ? 'is-active' : '']} data-idx={String(idx)}>
-              <div class="card bg-white p-7 relative h-full">
+              <div class="card bg-white p-7 relative">
                 <div class="cbr absolute bottom-3 right-3"></div>
-
                 <span class="mono-tag text-[9px] text-ice-500">{eq.tag}</span>
-
                 <div class="flex items-start justify-between mt-2 mb-5">
                   <div>
                     <h3 class="display text-3xl text-steel-900 leading-tight">{eq.title}</h3>
                     <p class="mono-tag text-[9px] text-[--muted] mt-1">{eq.sub}</p>
                   </div>
-                  <span class="display text-5xl text-steel-100 select-none flex-shrink-0 ml-3 leading-none">
-                    {eq.num}
-                  </span>
+                  <span class="display text-5xl text-steel-100 select-none flex-shrink-0 ml-3 leading-none">{eq.num}</span>
                 </div>
-
                 <p class="text-[--muted] text-sm leading-relaxed mb-6">{eq.desc}</p>
-
-                <div class="grid grid-cols-2 gap-2">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {eq.specs.map(s => (
                     <div class="border border-[--border] px-3 py-2.5">
                       <p class="mono-tag text-[8px] text-[--muted]">{s.k}</p>
@@ -307,16 +366,60 @@ import { EQUIPOS } from '../../data/equipos';
         </div>
 
       </div>
-    </div><!-- /grid -->
-
+    </div>
   </div>
 </section>
 
 <style>
-  /* ── Slider track: apila todas las slides en la misma celda ── */
-  #eq-track {
-    display: grid;
+  /* ── SVG animations ── */
+  .eq-anim {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
   }
+  .eq-anim.is-active { opacity: 1; }
+
+  /* Drum spin */
+  #drum { animation: drumSpin 6s linear infinite; }
+  @keyframes drumSpin { to { transform: rotate(360deg); } }
+
+  /* Fan spin */
+  @keyframes fanRot { to { transform: rotate(360deg); } }
+
+  /* Ice tubes falling */
+  .ice-tube-fall { animation: tubeFall 2.2s ease-in-out infinite; }
+  @keyframes tubeFall {
+    0%   { transform: translateY(-8px);  opacity: 0; }
+    20%  { opacity: 1; }
+    80%  { opacity: 1; }
+    100% { transform: translateY(12px);  opacity: 0; }
+  }
+
+  /* Brine bubbles */
+  .bubble-rise { animation: bubbleUp 2s ease-in infinite; }
+  @keyframes bubbleUp {
+    0%   { transform: translateY(0);     opacity: 0.6; }
+    100% { transform: translateY(-70px); opacity: 0; }
+  }
+
+  /* Cold air drops */
+  .air-drop { animation: airDrop 1.8s ease-in infinite; stroke-dasharray: 30; }
+  @keyframes airDrop {
+    0%   { stroke-dashoffset: 0;  opacity: 0.7; }
+    100% { stroke-dashoffset: 60; opacity: 0;   }
+  }
+
+  /* Brine wave */
+  #brine-wave { animation: brineWave 3s ease-in-out infinite alternate; }
+  @keyframes brineWave {
+    0%   { d: path("M62 230 Q110 226 160 230 Q210 234 260 230 Q310 226 338 230"); }
+    100% { d: path("M62 232 Q110 236 160 232 Q210 228 260 232 Q310 236 338 232"); }
+  }
+
+  /* ── Slider track ── */
+  #eq-track { display: grid; }
   .eq-slide {
     grid-area: 1 / 1;
     opacity: 0;
@@ -336,104 +439,113 @@ import { EQUIPOS } from '../../data/equipos';
 
   /* ── Dots ── */
   .eq-dot {
-    width: 6px; height: 6px;
-    border-radius: 9999px;
+    width: 6px; height: 6px; border-radius: 9999px;
     background: rgba(35,90,140,0.2);
     border: none; cursor: pointer; padding: 0;
     transition: background 0.3s, width 0.3s;
   }
-  .eq-dot.is-active {
-    background: #22bbd4;
-    width: 18px;
-  }
+  .eq-dot.is-active { background: #22bbd4; width: 18px; }
 
-  /* ── Transición suave del tag/num del diagrama ── */
-  #eq-tag, #eq-num {
-    transition: opacity 0.25s ease;
-  }
-  #eq-tag.fading, #eq-num.fading {
-    opacity: 0;
-  }
+  /* Tag/num fade */
+  #eq-tag, #eq-num { transition: opacity 0.25s ease; }
+  #eq-tag.fading, #eq-num.fading { opacity: 0; }
 </style>
 
 <script>
   import GLightbox from 'glightbox';
   import 'glightbox/dist/css/glightbox.min.css';
 
-  GLightbox({
-    selector: '.glightbox',
-    touchNavigation: true,
-    loop: true,
-    closeButton: true,
-    zoomable: true,
-  });
+  GLightbox({ selector: '.glightbox', touchNavigation: true, loop: true, zoomable: true });
 
-  interface EqData { id: string; tag: string; num: string; }
-
-  const EQ: EqData[] = [
-    { id: 'rolito', tag: 'Producción de hielo',    num: '01' },
-    { id: 'barras', tag: 'Hielo en bloque',         num: '02' },
-    { id: 'camara', tag: 'Almacenamiento en frío',  num: '03' },
-    { id: 'evap',   tag: 'Transferencia de calor',  num: '04' },
-  ];
+  // ── Slider ──
+  const EQ_IDS   = ['rolito', 'barras', 'camara', 'evap'];
+  const EQ_TAGS  = ['Producción de hielo', 'Hielo en bloque', 'Almacenamiento en frío', 'Transferencia de calor'];
+  const EQ_NUMS  = ['01', '02', '03', '04'];
+  const TOTAL    = EQ_IDS.length;
 
   let current = 0;
-  const TOTAL  = EQ.length;
 
-  const slides   = Array.from(document.querySelectorAll<HTMLElement>('.eq-slide'));
-  const canvases = Array.from(document.querySelectorAll<HTMLElement>('[id^="eq-canvas-"]'));
-  const dots     = Array.from(document.querySelectorAll<HTMLElement>('.eq-dot'));
-  const tagEl    = document.getElementById('eq-tag');
-  const numEl    = document.getElementById('eq-num');
-  const counter  = document.getElementById('eq-counter');
+  const slides    = Array.from(document.querySelectorAll<HTMLElement>('.eq-slide'));
+  const anims     = EQ_IDS.map(id => document.getElementById(`eq-canvas-${id}`) as HTMLElement);
+  const dots      = Array.from(document.querySelectorAll<HTMLElement>('.eq-dot'));
+  const galleries = Array.from(document.querySelectorAll<HTMLElement>('[data-eq-gallery]'));
+  const tagEl     = document.getElementById('eq-tag');
+  const numEl     = document.getElementById('eq-num');
+  const counter   = document.getElementById('eq-counter');
 
   function goTo(next: number) {
     if (next === current || next < 0 || next >= TOTAL) return;
 
-    // Deactivate current slide
     slides[current].classList.remove('is-active');
 
-    // Activate next (remove first to retrigger animation)
     slides[next].classList.remove('is-active');
-    void (slides[next] as HTMLElement).offsetWidth; // force reflow
+    void slides[next].offsetWidth;
     slides[next].classList.add('is-active');
 
-    // Canvases
-    canvases.forEach((c, i) => {
-      c.style.opacity = i === next ? '1' : '0';
+    anims.forEach((el, i) => el?.classList.toggle('is-active', i === next));
+
+    // Cambiar galería con fade
+    galleries.forEach((g, i) => {
+      if (i === next) {
+        g.classList.remove('hidden');
+        g.style.opacity = '0';
+        requestAnimationFrame(() => {
+          g.style.transition = 'opacity 0.4s ease';
+          g.style.opacity = '1';
+        });
+      } else {
+        g.style.opacity = '0';
+        setTimeout(() => g.classList.add('hidden'), 380);
+      }
     });
 
-    // Tag + Num fade swap
     [tagEl, numEl].forEach(el => el?.classList.add('fading'));
     setTimeout(() => {
-      if (tagEl) tagEl.textContent = EQ[next].tag;
-      if (numEl) numEl.textContent = EQ[next].num;
+      if (tagEl) tagEl.textContent = EQ_TAGS[next];
+      if (numEl) numEl.textContent = EQ_NUMS[next];
       [tagEl, numEl].forEach(el => el?.classList.remove('fading'));
     }, 250);
 
-    // Counter
     if (counter) counter.textContent = `${String(next + 1).padStart(2, '0')} / 0${TOTAL}`;
-
-    // Dots
-    dots.forEach((d, i) => {
-      d.classList.toggle('is-active', i === next);
-    });
+    dots.forEach((d, i) => d.classList.toggle('is-active', i === next));
 
     current = next;
   }
 
   document.getElementById('eq-prev')?.addEventListener('click', () => goTo(current - 1));
   document.getElementById('eq-next')?.addEventListener('click', () => goTo(current + 1));
-
   dots.forEach((dot, i) => dot.addEventListener('click', () => goTo(i)));
 
-  // Soporte teclado ← →
   document.addEventListener('keydown', (e: KeyboardEvent) => {
-    const sec = document.getElementById('equipos');
-    if (!sec) return;
-    const rect = sec.getBoundingClientRect();
-    if (rect.top > window.innerHeight || rect.bottom < 0) return;
+    const rect = document.getElementById('equipos')?.getBoundingClientRect();
+    if (!rect || rect.top > window.innerHeight || rect.bottom < 0) return;
     if (e.key === 'ArrowRight') goTo(current + 1);
     if (e.key === 'ArrowLeft')  goTo(current - 1);
   });
+
+  // ── Partículas evaporador (rAF) ──
+  const evapFlow = document.getElementById('evap-flow');
+  if (evapFlow) {
+    const ns = 'http://www.w3.org/2000/svg';
+    const rows = [168, 192, 216, 240, 264];
+    const particles = rows.flatMap(y =>
+      Array.from({length: 3}, (_, j) => {
+        const c = document.createElementNS(ns, 'circle');
+        c.setAttribute('r', '2.5');
+        c.setAttribute('fill', 'rgba(34,187,212,0.6)');
+        evapFlow.appendChild(c);
+        return { el: c, x: 100 + j * 80, y };
+      })
+    );
+    function tick() {
+      particles.forEach((p, i) => {
+        p.x += 0.6 + (i % 3) * 0.2;
+        if (p.x > 340) p.x = 52;
+        p.el.setAttribute('cx', String(p.x));
+        p.el.setAttribute('cy', String(p.y));
+      });
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
 </script>

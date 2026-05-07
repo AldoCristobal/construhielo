@@ -47,10 +47,55 @@ const {
     </svg>
   </a>
 
+  <!-- Mascota fija — aparece solo cuando #contacto está en pantalla -->
+  <img
+    src="/images/mascota.png"
+    alt=""
+    id="mascota-fixed"
+    class="pointer-events-none select-none drop-shadow-2xl"
+    style="
+      display: none;
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      width: 120px;
+      transform: scaleX(-1);
+      z-index: 40;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      opacity: 0;
+    "
+    aria-hidden="true"
+    loading="lazy"
+    draggable="false"
+  />
+
 </body>
 </html>
 
 <script>
+  // Mascota — solo visible cuando #contacto está en pantalla (desktop)
+  const mascota = document.getElementById('mascota-fixed') as HTMLElement | null;
+  const contacto = document.getElementById('contacto');
+  if (mascota && contacto && window.matchMedia('(min-width: 1024px)').matches) {
+    const mo = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          mascota.style.display = 'block';
+          requestAnimationFrame(() => {
+            mascota.style.opacity = '1';
+            mascota.style.transform = 'scaleX(-1) translateY(0)';
+          });
+        } else {
+          mascota.style.opacity = '0';
+          mascota.style.transform = 'scaleX(-1) translateY(30px)';
+          setTimeout(() => { mascota.style.display = 'none'; }, 400);
+        }
+      },
+      { threshold: 0.1 }
+    );
+    mo.observe(contacto);
+  }
+
   // Scroll reveal — compartido entre todas las secciones
   const ro = new IntersectionObserver(
     entries => entries.forEach(e => {

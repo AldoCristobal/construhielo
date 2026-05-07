@@ -55,7 +55,7 @@ const cardDark = (i: number) => i % 2 === 0;
       </div>
 
       <div class="flex justify-center" data-reveal="right" data-delay="200">
-        <div class="relative w-80 h-80 flex items-center justify-center">
+        <div class="relative w-56 h-56 sm:w-80 sm:h-80 flex items-center justify-center">
           <svg class="absolute inset-0 w-full h-full animate-spin-slow" viewBox="0 0 320 320" fill="none" aria-hidden="true">
             <circle cx="160" cy="160" r="148" stroke="rgba(35,90,140,0.08)" stroke-width="1" stroke-dasharray="6 5"/>
             <circle cx="160" cy="160" r="130" stroke="rgba(35,90,140,0.06)" stroke-width="1"/>
@@ -70,7 +70,7 @@ const cardDark = (i: number) => i % 2 === 0;
               );
             })}
           </svg>
-          <svg class="w-52 h-52" viewBox="0 0 200 200" fill="none"
+          <svg class="w-36 h-36 sm:w-52 sm:h-52" viewBox="0 0 200 200" fill="none"
                style="animation:spinRev 10s linear infinite" aria-hidden="true">
             {[0,30,60,90,120,150].map(deg => {
               const r = deg*Math.PI/180;
@@ -97,7 +97,7 @@ const cardDark = (i: number) => i % 2 === 0;
             <circle cx="100" cy="100" r="16" stroke="rgba(34,187,212,0.3)" stroke-width="1" fill="none"/>
           </svg>
           <div class="absolute text-center pointer-events-none">
-            <p class="display text-5xl text-steel-700 leading-none">30+</p>
+            <p class="display text-4xl sm:text-5xl text-steel-700 leading-none">30+</p>
             <p class="mono-tag text-[9px] text-[--muted] mt-1">AÑOS</p>
           </div>
         </div>

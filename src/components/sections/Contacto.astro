@@ -16,8 +16,8 @@ const contactItems = [
   },
   {
     label: 'Taller y oficinas',
-    val:   'Puebla, México',
-    href:  null,
+    val:   'Guadalupe Victoria 4, Ignacio Romero Vargas, Puebla',
+    href:  'https://maps.google.com/?q=Guadalupe+Victoria+4,+Ignacio+Romero+Vargas,+72120+Heroica+Puebla+de+Zaragoza,+Pue.',
     ico:   'M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z',
   },
 ];
@@ -33,6 +33,7 @@ const productos = [
 ---
 
 <section id="contacto" class="py-28 bg-[--surface2] relative" aria-labelledby="cont-h">
+
 
   <div class="absolute inset-x-0 top-0 h-px"
        style="background:linear-gradient(90deg,transparent,rgba(35,90,140,0.2),transparent);"
@@ -57,31 +58,31 @@ const productos = [
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div>
-              <label class="mono-tag text-[9px] text-[--muted] block mb-2" for="fn">Nombre *</label>
+              <label class="mono-tag text-[10px] text-[--muted] block mb-2" for="fn">Nombre *</label>
               <input id="fn" name="nombre" type="text" required autocomplete="name"
                      class="field" placeholder="Tu nombre"/>
             </div>
             <div>
-              <label class="mono-tag text-[9px] text-[--muted] block mb-2" for="fe">Empresa</label>
+              <label class="mono-tag text-[10px] text-[--muted] block mb-2" for="fe">Empresa</label>
               <input id="fe" name="empresa" type="text" class="field" placeholder="Nombre de tu empresa"/>
             </div>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div>
-              <label class="mono-tag text-[9px] text-[--muted] block mb-2" for="fem">Correo *</label>
+              <label class="mono-tag text-[10px] text-[--muted] block mb-2" for="fem">Correo *</label>
               <input id="fem" name="email" type="email" required autocomplete="email"
                      class="field" placeholder="tucorreo@ejemplo.com"/>
             </div>
             <div>
-              <label class="mono-tag text-[9px] text-[--muted] block mb-2" for="ft">Teléfono *</label>
+              <label class="mono-tag text-[10px] text-[--muted] block mb-2" for="ft">Teléfono *</label>
               <input id="ft" name="tel" type="tel" required autocomplete="tel"
                      class="field" placeholder="222 000 0000"/>
             </div>
           </div>
 
           <div>
-            <label class="mono-tag text-[9px] text-[--muted] block mb-2" for="fp">Equipo de interés *</label>
+            <label class="mono-tag text-[10px] text-[--muted] block mb-2" for="fp">Equipo de interés *</label>
             <select id="fp" name="producto" required class="field">
               <option value="" disabled selected>Seleccionar…</option>
               {productos.map(p => <option>{p}</option>)}
@@ -89,7 +90,7 @@ const productos = [
           </div>
 
           <div>
-            <label class="mono-tag text-[9px] text-[--muted] block mb-2" for="fm">Describe tu proyecto *</label>
+            <label class="mono-tag text-[10px] text-[--muted] block mb-2" for="fm">Describe tu proyecto *</label>
             <textarea id="fm" name="mensaje" required rows="5" class="field resize-none"
                       placeholder="Capacidad requerida, ubicación, refrigerante si lo sabes, plazo estimado…"></textarea>
           </div>
@@ -109,19 +110,7 @@ const productos = [
       <!-- ── Info lateral ── -->
       <aside class="space-y-4" data-reveal="right" data-delay="200">
 
-        <!-- Wrapper relativo para anclar la mascota -->
-        <div class="relative">
-
-          <!-- Mascota saliendo del borde derecho de la card -->
-          <img
-            src="/images/mascota.png"
-            alt=""
-            class="absolute bottom-0 right-0 w-40 lg:w-52 pointer-events-none select-none drop-shadow-xl"
-            style="transform: translateX(80%) scaleX(-1); z-index: 10;"
-            aria-hidden="true"
-            loading="lazy"
-            draggable="false"
-          />
+        <div>
 
         <div class="card bg-white p-6 relative">
           <div class="ctl absolute top-3 left-3"></div>
@@ -175,6 +164,47 @@ const productos = [
           <div>
             <p class="text-steel-800 text-sm font-semibold">Respondemos en menos de 24 h</p>
             <p class="mono-tag text-[9px] text-[--muted]">Para urgencias, llama directo a oficina</p>
+          </div>
+        </div>
+
+        <!-- Mapa -->
+        <div class="border border-[--border] bg-white relative overflow-hidden">
+          <div class="ctl absolute top-3 left-3 z-10"></div>
+          <p class="mono-tag text-[10px] text-[--muted] px-4 pt-4 pb-2">UBICACIÓN DEL TALLER</p>
+
+          <!-- iframe con filtro para armonizar con la paleta -->
+          <div class="relative" style="height:200px;">
+            <iframe
+              src="https://maps.google.com/maps?q=Guadalupe+Victoria+4,+Ignacio+Romero+Vargas,+72120+Heroica+Puebla+de+Zaragoza,+Pue.&output=embed&hl=es&z=16"
+              width="100%" height="200"
+              style="border:0; display:block; filter:grayscale(0.9) contrast(1.05) brightness(0.97);"
+              loading="lazy"
+              allowfullscreen
+              referrerpolicy="no-referrer-when-downgrade"
+              title="Ubicación ConstruHielo — Guadalupe Victoria 4, Puebla"
+              aria-label="Mapa de ubicación del taller ConstruHielo"
+            ></iframe>
+            <!-- Overlay azul sutil para integrar al diseño -->
+            <div class="absolute inset-0 pointer-events-none"
+                 style="background:rgba(35,90,140,0.06); mix-blend-mode:multiply;"
+                 aria-hidden="true"></div>
+          </div>
+
+          <!-- Pie del mapa -->
+          <div class="px-4 py-3 border-t border-[--border] flex items-center justify-between gap-3">
+            <p class="text-steel-700 text-xs leading-snug">
+              Guadalupe Victoria 4,<br/>Ignacio Romero Vargas, Puebla
+            </p>
+            <a
+              href="https://maps.google.com/?q=Guadalupe+Victoria+4,+Ignacio+Romero+Vargas,+72120+Heroica+Puebla+de+Zaragoza,+Pue."
+              target="_blank" rel="noopener noreferrer"
+              class="flex-shrink-0 flex items-center gap-1.5 mono-tag text-[9px] text-ice-600 hover:text-ice-500 transition-colors"
+            >
+              Ver en Maps
+              <svg width="10" height="10" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M6 3h7v7M13 3L3 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+            </a>
           </div>
         </div>
 
