@@ -1,9 +1,11 @@
 ---
 interface Props {
-  /** 'light' = sobre fondo claro (navbar) | 'dark' = sobre fondo oscuro (footer) */
   variant?: 'light' | 'dark';
   href?: string;
   height?: number;
+  /** No usados en render pero aceptados para evitar warnings de TypeScript */
+  animate?: boolean;
+  textSize?: string;
 }
 
 const {

@@ -62,19 +62,8 @@ import { NAV } from '../../data/nav';
   const icoC  = document.getElementById('ico-c');
 
   let overlay: HTMLDivElement | null = null;
-
-  function openMenu() {
-    mmenu?.classList.remove('hidden');
-    hbtn?.setAttribute('aria-expanded', 'true');
-    icoO?.classList.add('hidden');
-    icoC?.classList.remove('hidden');
-    // Crear overlay
-    overlay = document.createElement('div');
-    overlay.className = 'fixed inset-0 bg-black/20 backdrop-blur-[1px] z-40';
-    overlay.setAttribute('aria-hidden', 'true');
-    overlay.addEventListener('click', closeMenu);
-    document.body.appendChild(overlay);
-  }
+  const ac = new AbortController();
+  const { signal } = ac;
 
   function closeMenu() {
     mmenu?.classList.add('hidden');
@@ -85,17 +74,30 @@ import { NAV } from '../../data/nav';
     overlay = null;
   }
 
+  function openMenu() {
+    mmenu?.classList.remove('hidden');
+    hbtn?.setAttribute('aria-expanded', 'true');
+    icoO?.classList.add('hidden');
+    icoC?.classList.remove('hidden');
+    overlay = document.createElement('div');
+    overlay.className = 'fixed inset-0 bg-black/20 backdrop-blur-[1px] z-40';
+    overlay.setAttribute('aria-hidden', 'true');
+    overlay.addEventListener('click', closeMenu, { signal });
+    document.body.appendChild(overlay);
+  }
+
   hbtn?.addEventListener('click', () => {
-    const isOpen = mmenu?.classList.contains('hidden') === false;
-    isOpen ? closeMenu() : openMenu();
-  });
+    mmenu?.classList.contains('hidden') ? openMenu() : closeMenu();
+  }, { signal });
 
   document.querySelectorAll('.mob-link').forEach(l =>
-    l.addEventListener('click', closeMenu)
+    l.addEventListener('click', closeMenu, { signal })
   );
 
-  // Cerrar con Escape
   document.addEventListener('keydown', (e: KeyboardEvent) => {
     if (e.key === 'Escape') closeMenu();
-  });
+  }, { signal });
+
+  // Limpiar listeners cuando Astro navegue
+  document.addEventListener('astro:before-swap', () => ac.abort(), { once: true });
 </script>

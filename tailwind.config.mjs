@@ -4,6 +4,7 @@ export default {
   theme: {
     extend: {
       colors: {
+        whatsapp: '#25d366',
         paper: {
           50:  '#f8fbfd',
           100: '#eef5f9',

@@ -20,7 +20,9 @@ import { STATS_HERO } from '../../data/nosotros';
     class="absolute right-0 top-0 bottom-0 w-[52%] hidden lg:flex items-center justify-center pointer-events-none pr-8"
     aria-hidden="true"
   >
-    <svg id="hsvg" viewBox="0 0 520 500" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-[560px]">
+    <svg id="hsvg" viewBox="0 0 520 500" fill="none" xmlns="http://www.w3.org/2000/svg"
+         class="w-full max-w-[560px]" role="img" aria-labelledby="hsvg-title">
+      <title id="hsvg-title">Diagrama de ciclo de refrigeración industrial</title>
       <defs>
         <linearGradient id="tankGrad" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%"   stop-color="rgba(34,187,212,0.15)"/>
@@ -197,6 +199,7 @@ import { STATS_HERO } from '../../data/nosotros';
       g.appendChild(c);
       return { el: c, pos: (i/14)*circuit.length, speed: 0.08+Math.random()*0.07 };
     });
+    let heroRafId: number;
     const tick = () => {
       particles.forEach(p => {
         p.pos = (p.pos + p.speed) % circuit.length;
@@ -207,8 +210,10 @@ import { STATS_HERO } from '../../data/nosotros';
         p.el.setAttribute('cx', String(a.x + (b.x-a.x)*t));
         p.el.setAttribute('cy', String(a.y + (b.y-a.y)*t));
       });
-      requestAnimationFrame(tick);
+      heroRafId = requestAnimationFrame(tick);
     };
-    requestAnimationFrame(tick);
+    heroRafId = requestAnimationFrame(tick);
+    // Cancelar al navegar
+    document.addEventListener('astro:before-swap', () => cancelAnimationFrame(heroRafId), { once: true });
   }
 </script>

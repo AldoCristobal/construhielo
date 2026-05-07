@@ -1,21 +1,12 @@
 ---
 import LogoSnowflake from '../ui/LogoSnowflake.astro';
 import { NAV } from '../../data/nav';
+import { PHONE_OFFICE, PHONE_WA, EMAIL, WA_SIMPLE } from '../../data/contact';
 
 const contactItems = [
-  {
-    label: 'Tel. 222 590 1004',
-    href:  'tel:2225901004',
-  },
-  {
-    label: 'WhatsApp 222 849 4578',
-    href:  'https://wa.me/522228494578',
-    dot:   true,
-  },
-  {
-    label: 'construhielo@gmail.com',
-    href:  'mailto:construhielo@gmail.com',
-  },
+  { label: `Tel. ${PHONE_OFFICE.replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3')}`, href: `tel:${PHONE_OFFICE}` },
+  { label: `WhatsApp 222 849 4578`, href: WA_SIMPLE, dot: true },
+  { label: EMAIL, href: `mailto:${EMAIL}` },
 ];
 ---
 

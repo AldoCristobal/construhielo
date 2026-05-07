@@ -73,11 +73,14 @@ const {
 </html>
 
 <script>
-  // Mascota — solo visible cuando #contacto está en pantalla (desktop)
-  const mascota = document.getElementById('mascota-fixed') as HTMLElement | null;
+  // ── Mascota — solo visible cuando #contacto está en pantalla (desktop) ──
+  const mascota  = document.getElementById('mascota-fixed') as HTMLElement | null;
   const contacto = document.getElementById('contacto');
+
+  let mascotaObserver: IntersectionObserver | null = null;
+
   if (mascota && contacto && window.matchMedia('(min-width: 1024px)').matches) {
-    const mo = new IntersectionObserver(
+    mascotaObserver = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           mascota.style.display = 'block';
@@ -93,39 +96,46 @@ const {
       },
       { threshold: 0.1 }
     );
-    mo.observe(contacto);
+    mascotaObserver.observe(contacto);
   }
 
-  // Scroll reveal — compartido entre todas las secciones
-  const ro = new IntersectionObserver(
+  // ── Scroll reveal ──
+  const revealObs = new IntersectionObserver(
     entries => entries.forEach(e => {
       if (e.isIntersecting) {
         e.target.classList.add('visible');
-        ro.unobserve(e.target);
+        revealObs.unobserve(e.target);
       }
     }),
     { threshold: 0.10, rootMargin: '0px 0px -32px 0px' }
   );
-  document.querySelectorAll('[data-reveal]').forEach(el => ro.observe(el));
+  document.querySelectorAll('[data-reveal]').forEach(el => revealObs.observe(el));
 
-  // Contador animado
-  const co = new IntersectionObserver(entries => {
+  // ── Contador animado ──
+  const COUNTER_DURATION = 1500;
+  const counterObs = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (!e.isIntersecting) return;
       const el  = e.target as HTMLElement;
       const end = parseInt(el.dataset.count ?? '0', 10);
       const sfx = el.dataset.suffix ?? '';
-      const dur = 1500;
       const t0  = performance.now();
       const tick = (now: number) => {
-        const p  = Math.min((now - t0) / dur, 1);
+        const p  = Math.min((now - t0) / COUNTER_DURATION, 1);
         const ep = 1 - Math.pow(1 - p, 3);
         el.textContent = Math.round(ep * end) + sfx;
         if (p < 1) requestAnimationFrame(tick);
       };
       requestAnimationFrame(tick);
-      co.unobserve(el);
+      counterObs.unobserve(el);
     });
   }, { threshold: 0.5 });
-  document.querySelectorAll('[data-count]').forEach(el => co.observe(el));
+  document.querySelectorAll('[data-count]').forEach(el => counterObs.observe(el));
+
+  // ── Cleanup al navegar ──
+  document.addEventListener('astro:before-swap', () => {
+    mascotaObserver?.disconnect();
+    revealObs.disconnect();
+    counterObs.disconnect();
+  }, { once: true });
 </script>

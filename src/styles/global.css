@@ -137,3 +137,23 @@ body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta San
 }
 .nav-link:hover::after,
 .nav-link.active::after { width: 100%; }
+
+/* ── Z-index scale ──────────────────────────────── */
+:root {
+  --z-base:    1;
+  --z-raised:  10;
+  --z-overlay: 40;
+  --z-nav:     50;
+  --z-top:     99;
+}
+
+/* ── Reduced motion ─────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  [data-reveal] { opacity: 1 !important; transform: none !important; }
+  [data-reveal].visible { animation: none !important; }
+}

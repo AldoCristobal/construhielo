@@ -340,7 +340,7 @@ const GALLERIES = [
         <!-- Track de cards -->
         <div id="eq-track">
           {EQUIPOS.map((eq, idx) => (
-            <div class:list={['eq-slide', idx === 0 ? 'is-active' : '']} data-idx={String(idx)}>
+            <div class:list={['eq-slide', idx === 0 ? 'is-active' : '']} data-idx={String(idx)} data-tag={eq.tag} data-num={eq.num}>
               <div class="card bg-white p-4 sm:p-7 relative">
                 <div class="cbr absolute bottom-3 right-3"></div>
                 <span class="mono-tag text-[9px] text-ice-500">{eq.tag}</span>
@@ -455,31 +455,36 @@ const GALLERIES = [
   import GLightbox from 'glightbox';
   import 'glightbox/dist/css/glightbox.min.css';
 
+  // ── Constantes ──
+  const TRANSITION_MS = 380;
+
+  // ── GLightbox ──
   GLightbox({ selector: '.glightbox', touchNavigation: true, loop: true, zoomable: true });
 
-  // ── Slider ──
-  const EQ_IDS   = ['rolito', 'barras', 'camara', 'evap'];
-  const EQ_TAGS  = ['Producción de hielo', 'Hielo en bloque', 'Almacenamiento en frío', 'Transferencia de calor'];
-  const EQ_NUMS  = ['01', '02', '03', '04'];
-  const TOTAL    = EQ_IDS.length;
+  // ── Elementos del DOM ──
+  const slides    = Array.from(document.querySelectorAll<HTMLElement>('.eq-slide'));
+  const galleries = Array.from(document.querySelectorAll<HTMLElement>('[data-eq-gallery]'));
+  const dots      = Array.from(document.querySelectorAll<HTMLElement>('.eq-dot'));
+  const counter   = document.getElementById('eq-counter');
+
+  // Derivar datos desde el DOM (fuente de verdad = HTML renderizado)
+  const EQ_IDS  = slides.map(s => s.dataset.idx ?? '');
+  const EQ_TAGS = slides.map(s => s.dataset.tag ?? '');
+  const EQ_NUMS = slides.map(s => s.dataset.num ?? '');
+  const TOTAL   = slides.length;
+
+  // Animaciones SVG (pueden ser null si el elemento no existe)
+  const anims = ['rolito', 'barras', 'camara', 'evap']
+    .map(id => document.getElementById(`eq-canvas-${id}`));
 
   let current = 0;
-
-  const slides    = Array.from(document.querySelectorAll<HTMLElement>('.eq-slide'));
-  const anims     = EQ_IDS.map(id => document.getElementById(`eq-canvas-${id}`) as HTMLElement);
-  const dots      = Array.from(document.querySelectorAll<HTMLElement>('.eq-dot'));
-  const galleries = Array.from(document.querySelectorAll<HTMLElement>('[data-eq-gallery]'));
-  const tagEl     = document.getElementById('eq-tag');
-  const numEl     = document.getElementById('eq-num');
-  const counter   = document.getElementById('eq-counter');
 
   function goTo(next: number) {
     if (next === current || next < 0 || next >= TOTAL) return;
 
     slides[current].classList.remove('is-active');
-
     slides[next].classList.remove('is-active');
-    void slides[next].offsetWidth;
+    void slides[next].offsetWidth; // force reflow
     slides[next].classList.add('is-active');
 
     anims.forEach((el, i) => el?.classList.toggle('is-active', i === next));
@@ -495,18 +500,13 @@ const GALLERIES = [
         });
       } else {
         g.style.opacity = '0';
-        setTimeout(() => g.classList.add('hidden'), 380);
+        setTimeout(() => g.classList.add('hidden'), TRANSITION_MS);
       }
     });
 
-    [tagEl, numEl].forEach(el => el?.classList.add('fading'));
-    setTimeout(() => {
-      if (tagEl) tagEl.textContent = EQ_TAGS[next];
-      if (numEl) numEl.textContent = EQ_NUMS[next];
-      [tagEl, numEl].forEach(el => el?.classList.remove('fading'));
-    }, 250);
-
-    if (counter) counter.textContent = `${String(next + 1).padStart(2, '0')} / 0${TOTAL}`;
+    if (counter) {
+      counter.textContent = `${String(next + 1).padStart(2, '0')} / 0${TOTAL}`;
+    }
     dots.forEach((d, i) => d.classList.toggle('is-active', i === next));
 
     current = next;
@@ -523,8 +523,9 @@ const GALLERIES = [
     if (e.key === 'ArrowLeft')  goTo(current - 1);
   });
 
-  // ── Partículas evaporador (rAF) ──
+  // ── Partículas evaporador (rAF cancelable) ──
   const evapFlow = document.getElementById('evap-flow');
+  let evapRafId: number;
   if (evapFlow) {
     const ns = 'http://www.w3.org/2000/svg';
     const rows = [168, 192, 216, 240, 264];
@@ -537,15 +538,17 @@ const GALLERIES = [
         return { el: c, x: 100 + j * 80, y };
       })
     );
-    function tick() {
+    const tick = () => {
       particles.forEach((p, i) => {
         p.x += 0.6 + (i % 3) * 0.2;
         if (p.x > 340) p.x = 52;
         p.el.setAttribute('cx', String(p.x));
         p.el.setAttribute('cy', String(p.y));
       });
-      requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
+      evapRafId = requestAnimationFrame(tick);
+    };
+    evapRafId = requestAnimationFrame(tick);
+    // Cancelar al navegar
+    document.addEventListener('astro:before-swap', () => cancelAnimationFrame(evapRafId), { once: true });
   }
 </script>
