@@ -97,6 +97,11 @@ const productos = [
                       placeholder="Capacidad requerida, ubicación, refrigerante si lo sabes, plazo estimado…"></textarea>
           </div>
 
+          <!-- Honeypot anti-spam: oculto para humanos, los bots lo llenan -->
+          <input type="text" name="website" tabindex="-1" autocomplete="off"
+                 aria-hidden="true"
+                 style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;"/>
+
           <div class="flex flex-wrap items-center gap-5 pt-1">
             <button type="submit" class="btn btn-primary">
               Enviar solicitud
@@ -250,7 +255,9 @@ const productos = [
     const btn = form.querySelector('button[type="submit"]');
     if (!(btn instanceof HTMLButtonElement)) return;
 
-    btn.disabled    = true;
+    // Guardar texto original para restaurarlo después (no hardcodeado)
+    const originalHTML = btn.innerHTML;
+    btn.disabled   = true;
     btn.textContent = 'Enviando…';
     fst.classList.add('hidden');
 
@@ -260,13 +267,19 @@ const productos = [
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           nombre:   d.get('nombre'),
-          empresa:  d.get('empresa') || '—',
+          empresa:  d.get('empresa'),   // fallback lo maneja el servidor
           email:    d.get('email'),
           telefono: d.get('tel'),
           producto: d.get('producto'),
           mensaje:  d.get('mensaje'),
+          website:  d.get('website'),   // honeypot
         }),
       });
+
+      // Verificar status HTTP antes de parsear JSON
+      if (!res.ok && res.status !== 422) {
+        throw new Error(`HTTP ${res.status}`);
+      }
 
       const json = await res.json();
 
@@ -278,12 +291,17 @@ const productos = [
         throw new Error(json.message ?? 'Error desconocido');
       }
     } catch (err) {
-      fst.textContent = '✗ Error al enviar. Escríbenos por WhatsApp o llámanos.';
-      fst.className   = 'mono-tag text-[10px] text-red-500';
+      const msg = err instanceof Error ? err.message : 'Error desconocido';
+      // No mostrar detalles técnicos (HTTP 500, etc.) al usuario
+      const isUserMsg = !msg.startsWith('HTTP');
+      fst.textContent = isUserMsg
+        ? `⚠ ${msg}`
+        : '✗ Error al enviar. Escríbenos por WhatsApp o llámanos.';
+      fst.className = 'mono-tag text-[10px] text-red-500';
     } finally {
       fst.classList.remove('hidden');
-      btn.disabled    = false;
-      btn.textContent = 'Enviar solicitud';
+      btn.disabled  = false;
+      btn.innerHTML = originalHTML;
     }
   });
 </script>

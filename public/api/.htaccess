@@ -1,0 +1,10 @@
+# Bloquear acceso directo a archivos de configuración
+<FilesMatch "^\.env\.php$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Bloquear acceso a PHPMailer (solo PHP lo usa internamente)
+<IfModule mod_autoindex.c>
+    Options -Indexes
+</IfModule>

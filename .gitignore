@@ -4,5 +4,10 @@ dist/
 .env
 .env.*
 !.env.example
-
 .vercel
+
+# Credenciales PHP — NUNCA al repositorio
+public/api/.env.php
+
+# Dependencias PHP (se instalan en el servidor o se copian manualmente)
+vendor/
