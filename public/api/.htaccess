@@ -8,13 +8,3 @@
 <IfModule mod_autoindex.c>
     Options -Indexes
 </IfModule>
-
-# Desactivar ModSecurity/WAF para el endpoint de contacto
-# HostGator lo bloquea como "bot" por ser una llamada fetch() sin cookies
-<IfModule mod_security2.c>
-    SecRuleEngine Off
-</IfModule>
-<IfModule mod_security.c>
-    SecFilterEngine Off
-    SecFilterScanPOST Off
-</IfModule>
