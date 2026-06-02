@@ -8,6 +8,7 @@ dist/
 
 # Credenciales PHP — NUNCA al repositorio
 public/api/.env.php
+!public/api/.env.php.example
 
 # Dependencias PHP (se instalan en el servidor o se copian manualmente)
 vendor/
