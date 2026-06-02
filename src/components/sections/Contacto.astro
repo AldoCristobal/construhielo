@@ -262,20 +262,34 @@ const productos = [
     btn.textContent = 'Enviando…';
     fst.classList.add('hidden');
 
+    // Payload reutilizable para el reintento tras challenge WAF
+    const payload = JSON.stringify({
+      nombre:   d.get('nombre'),
+      empresa:  d.get('empresa'),
+      email:    d.get('email'),
+      telefono: d.get('tel'),
+      producto: d.get('producto'),
+      mensaje:  d.get('mensaje'),
+      website:  d.get('website'),
+    });
+
+    const doFetch = () => fetch('/api/contact.php', {
+      method:      'POST',
+      credentials: 'include',                          // envía cookies al servidor
+      headers:     { 'Content-Type': 'application/json' },
+      body:        payload,
+    });
+
     try {
-      const res = await fetch('/api/contact.php', {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          nombre:   d.get('nombre'),
-          empresa:  d.get('empresa'),   // fallback lo maneja el servidor
-          email:    d.get('email'),
-          telefono: d.get('tel'),
-          producto: d.get('producto'),
-          mensaje:  d.get('mensaje'),
-          website:  d.get('website'),   // honeypot
-        }),
-      });
+      let res = await doFetch();
+
+      // HostGator WAF challenge (409): extrae la cookie del body y reintenta
+      if (res.status === 409) {
+        const html = await res.text();
+        const match = html.match(/document\.cookie\s*=\s*["']([^"']+)["']/);
+        if (match) document.cookie = match[1] + '; path=/';
+        res = await doFetch();   // segundo intento ya con la cookie
+      }
 
       // Verificar status HTTP antes de parsear JSON
       if (!res.ok && res.status !== 422) {
