@@ -32,9 +32,6 @@ const productos = [
   'Otro / Asesoría',
 ];
 
-// ⚠️ Obtén tu clave gratuita en https://web3forms.com
-// Vincúlala a construhielo@gmail.com y reemplaza el valor
-const WEB3FORMS_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY';
 ---
 
 <section id="contacto" class="py-28 bg-[--surface2] relative" aria-labelledby="cont-h">
@@ -232,7 +229,7 @@ const WEB3FORMS_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY';
   select.field option { background: white; color: #1c3348; }
 </style>
 
-<script define:vars={{ WEB3FORMS_KEY }}>
+<script>
   const form = document.getElementById('cform');
   const fst  = document.getElementById('fst');
 
@@ -258,19 +255,16 @@ const WEB3FORMS_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY';
     fst.classList.add('hidden');
 
     try {
-      const res = await fetch('https://api.web3forms.com/submit', {
+      const res = await fetch('/api/contact.php', {
         method:  'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          access_key: WEB3FORMS_KEY,
-          subject:    `Cotización — ${d.get('producto')} — ConstruHielo`,
-          from_name:  'ConstruHielo Web',
-          nombre:     d.get('nombre'),
-          empresa:    d.get('empresa') || '—',
-          email:      d.get('email'),
-          telefono:   d.get('tel'),
-          producto:   d.get('producto'),
-          mensaje:    d.get('mensaje'),
+          nombre:   d.get('nombre'),
+          empresa:  d.get('empresa') || '—',
+          email:    d.get('email'),
+          telefono: d.get('tel'),
+          producto: d.get('producto'),
+          mensaje:  d.get('mensaje'),
         }),
       });
 
@@ -284,7 +278,7 @@ const WEB3FORMS_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY';
         throw new Error(json.message ?? 'Error desconocido');
       }
     } catch (err) {
-      fst.textContent = '✗ Error al enviar. Intenta por WhatsApp o llámanos.';
+      fst.textContent = '✗ Error al enviar. Escríbenos por WhatsApp o llámanos.';
       fst.className   = 'mono-tag text-[10px] text-red-500';
     } finally {
       fst.classList.remove('hidden');
