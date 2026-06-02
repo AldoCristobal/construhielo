@@ -14,6 +14,10 @@ const MAX_REQUESTS = 3;    // Envíos permitidos por IP en la ventana de tiempo
 const RATE_WINDOW  = 300;  // Ventana en segundos (5 minutos)
 const SMTP_TIMEOUT = 10;   // Segundos antes de abortar conexión SMTP
 
+// SMTP por defecto para HostGator/cPanel — se puede sobreescribir en .env.php
+if (!defined('SMTP_HOST')) define('SMTP_HOST', 'mail.construhielo.com.mx');
+if (!defined('SMTP_PORT')) define('SMTP_PORT', 465);
+
 // Productos válidos — deben coincidir exactamente con el select del formulario
 const PRODUCTOS_VALIDOS = [
     'Máquina de Rolito',
@@ -33,7 +37,6 @@ if (!file_exists($envFile)) {
     exit;
 }
 require $envFile;
-// Espera que .env.php defina: GMAIL_USER, GMAIL_PASS, MAIL_TO, MAIL_NAME, ALLOWED_ORIGIN
 
 // ── Cabeceras HTTP ────────────────────────────────────────────────────────────
 header('Content-Type: application/json; charset=utf-8');
@@ -201,14 +204,14 @@ use PHPMailer\PHPMailer\Exception;
 try {
     $mail = new PHPMailer(true);
 
-    // SMTP Gmail
+    // SMTP HostGator / cPanel (correo corporativo)
     $mail->isSMTP();
-    $mail->Host       = 'smtp.gmail.com';
+    $mail->Host       = SMTP_HOST;
     $mail->SMTPAuth   = true;
     $mail->Username   = GMAIL_USER;
     $mail->Password   = GMAIL_PASS;
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port       = 587;
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;  // SSL para puerto 465
+    $mail->Port       = SMTP_PORT;
     $mail->Timeout    = SMTP_TIMEOUT;
     $mail->CharSet    = 'UTF-8';
 
