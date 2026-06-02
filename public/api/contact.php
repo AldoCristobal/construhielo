@@ -213,7 +213,7 @@ try {
     $mail->CharSet    = 'UTF-8';
 
     $mail->setFrom(GMAIL_USER, MAIL_NAME);
-    $mail->addAddress(MAIL_TO, 'ConstruHielo');
+    $mail->addAddress(MAIL_TO, 'Construhielo');
     $mail->addReplyTo((string) $email, $nombre); // $nombre ya sin \r\n
 
     $mail->Subject = "Cotización — {$producto} — ConstruHielo";

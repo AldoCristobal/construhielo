@@ -257,7 +257,8 @@ const productos = [
 
     // Guardar texto original para restaurarlo después (no hardcodeado)
     const originalHTML = btn.innerHTML;
-    btn.disabled   = true;
+    btn.disabled = true;
+    btn.setAttribute('aria-busy', 'true');
     btn.textContent = 'Enviando…';
     fst.classList.add('hidden');
 
@@ -300,7 +301,8 @@ const productos = [
       fst.className = 'mono-tag text-[10px] text-red-500';
     } finally {
       fst.classList.remove('hidden');
-      btn.disabled  = false;
+      btn.disabled = false;
+      btn.removeAttribute('aria-busy');
       btn.innerHTML = originalHTML;
     }
   });

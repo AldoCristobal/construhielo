@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+/* Google Fonts se cargan en BaseLayout.astro via <link rel="preconnect"> + <link rel="stylesheet">
+   para evitar render blocking. No usar @import aquí. */
 
 @tailwind base;
 @tailwind components;

@@ -282,8 +282,11 @@ const GALLERIES = [
                   <img
                     src={img.src}
                     alt={img.title}
+                    width="400"
+                    height="225"
                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     loading="lazy"
+                    decoding="async"
                   />
                   <div class="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/30 transition-colors duration-300">
                     {isLast && extra > 0 ? (

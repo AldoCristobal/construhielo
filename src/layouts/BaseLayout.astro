@@ -6,12 +6,50 @@ import Footer from '../components/layout/Footer.astro';
 interface Props {
   title:        string;
   description?: string;
+  ogImage?:     string;
 }
 
 const {
   title,
   description = 'ConstruHielo — Más de 30 años diseñando y fabricando equipos de refrigeración industrial en Puebla, México. Fábricas de hielo, cámaras frigoríficas y sistemas a medida.',
+  ogImage = '/images/logo/logo-dark.png',
 } = Astro.props;
+
+const siteUrl     = (Astro.site?.href ?? 'https://construhielo.com.mx').replace(/\/$/, '');
+const canonical   = Astro.url.href;
+const ogImageFull = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`;
+
+const jsonLd = {
+  '@context':   'https://schema.org',
+  '@type':      'LocalBusiness',
+  'name':       'ConstruHielo',
+  'description': description,
+  'url':        siteUrl,
+  'telephone':  '+52-222-590-1004',
+  'email':      'construhielo@gmail.com',
+  'foundingDate': '1994',
+  'image':      ogImageFull,
+  'logo':       ogImageFull,
+  'address': {
+    '@type':           'PostalAddress',
+    'streetAddress':   'Guadalupe Victoria 4',
+    'addressLocality': 'Puebla',
+    'addressRegion':   'Puebla',
+    'postalCode':      '72120',
+    'addressCountry':  'MX',
+  },
+  'geo': {
+    '@type':     'GeoCoordinates',
+    'latitude':   19.057,
+    'longitude': -98.209,
+  },
+  'openingHoursSpecification': {
+    '@type':      'OpeningHoursSpecification',
+    'dayOfWeek':  ['Monday','Tuesday','Wednesday','Thursday','Friday'],
+    'opens':      '08:00',
+    'closes':     '18:00',
+  },
+};
 ---
 
 <!doctype html>
@@ -19,16 +57,55 @@ const {
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+  <!-- SEO básico -->
   <meta name="description" content={description}/>
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+  <link rel="canonical" href={canonical}/>
+
+  <!-- Open Graph (WhatsApp, LinkedIn, Facebook) -->
+  <meta property="og:type"        content="website"/>
+  <meta property="og:url"         content={canonical}/>
+  <meta property="og:title"       content={`${title} | ConstruHielo`}/>
+  <meta property="og:description" content={description}/>
+  <meta property="og:image"       content={ogImageFull}/>
+  <meta property="og:locale"      content="es_MX"/>
+  <meta property="og:site_name"   content="ConstruHielo"/>
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image"/>
+  <meta name="twitter:title"       content={`${title} | ConstruHielo`}/>
+  <meta name="twitter:description" content={description}/>
+  <meta name="twitter:image"       content={ogImageFull}/>
+
+  <!-- Favicons -->
+  <link rel="icon"             type="image/svg+xml"  href="/favicon.svg"/>
+  <link rel="apple-touch-icon" sizes="180x180"       href="/apple-touch-icon.png"/>
+
+  <!-- Google Fonts — preconnect evita render blocking -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap"/>
+
   <title>{title} | ConstruHielo</title>
+
+  <!-- JSON-LD Structured Data (rich snippets en Google) -->
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)}/>
 </head>
 
 <body class="bg-[--bg] text-[--text] antialiased">
 
+  <!-- Skip to content — WCAG 2.1 Nivel A -->
+  <a href="#main-content"
+     class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-1/2 focus:-translate-x-1/2
+            focus:z-[100] focus:px-5 focus:py-2 focus:bg-[--accent] focus:text-white
+            focus:mono-tag focus:shadow-lg">
+    Saltar al contenido principal
+  </a>
+
   <Navbar />
 
-  <main>
+  <main id="main-content">
     <slot/>
   </main>
 
